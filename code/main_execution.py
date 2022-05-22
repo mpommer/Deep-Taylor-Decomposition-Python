@@ -10,7 +10,7 @@ from omega_squared import omega_squared
 from Neural_Network import NN
 import numpy as np
 
-path = "../../../data/Titanic/titanic"
+path = "data/Titanic"
 
 minmaxscaler=True
 

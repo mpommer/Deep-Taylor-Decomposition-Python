@@ -16,3 +16,6 @@
 *.dvi
 *.xdv
 *-converted-to.*
+
+## ignore data folder
+data/
