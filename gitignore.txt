@@ -19,5 +19,6 @@
 
 ## ignore data folder
 /data/Titanic
-/data/
+/data/Titanic/*
+/data
 *.csv
