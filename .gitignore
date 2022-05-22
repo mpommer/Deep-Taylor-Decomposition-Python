@@ -20,5 +20,5 @@
 ## ignore data folder
 data/
 *.csv
-
+ml_paper.pdf
 .bak
