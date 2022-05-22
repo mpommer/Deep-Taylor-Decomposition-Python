@@ -18,7 +18,5 @@
 *-converted-to.*
 
 ## ignore data folder
-/data/Titanic
-/data/Titanic/*
-/data
+dataTitanic/
 *.csv
