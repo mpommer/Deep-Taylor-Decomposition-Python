@@ -20,3 +20,5 @@
 ## ignore data folder
 data/
 *.csv
+
+.bak
