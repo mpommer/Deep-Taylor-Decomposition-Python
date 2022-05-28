@@ -1,0 +1,59 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{Montavon.2017}
+\citation{Montavon.2017}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Example: Detecting 0 with distrecting numbers with a neural network}}{1}{figure.2}\protected@file@percent }
+\newlabel{fig.1}{{1}{1}{Example: Detecting 0 with distrecting numbers with a neural network}{figure.2}{}}
+\newlabel{fig.1@cref}{{[figure][1][]1}{[1][1][]1}}
+\newlabel{sec:main}{{2}{2}{Main results}{section.4}{}}
+\newlabel{sec:main@cref}{{[section][2][]2}{[1][2][]2}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Main results}{2}{section.4}\protected@file@percent }
+\@writefile{thm}{\contentsline {definition}{{Definition}{2.1}{conservative}}{2}{theorem.5}\protected@file@percent }
+\newlabel{thm:conservative}{{2.1}{2}{Main results}{theorem.5}{}}
+\newlabel{thm:conservative@cref}{{[definition][1][2]2.1}{[1][2][]2}}
+\@writefile{thm}{\contentsline {definition}{{Definition}{2.2}{positive}}{2}{theorem.6}\protected@file@percent }
+\newlabel{thm:positive}{{2.2}{2}{Main results}{theorem.6}{}}
+\newlabel{thm:positive@cref}{{[definition][2][2]2.2}{[1][2][]2}}
+\@writefile{thm}{\contentsline {definition}{{Definition}{2.3}{consistent}}{2}{theorem.7}\protected@file@percent }
+\newlabel{thm:consistent}{{2.3}{2}{Main results}{theorem.7}{}}
+\newlabel{thm:consistent@cref}{{[definition][3][2]2.3}{[1][2][]2}}
+\newlabel{sec:alg}{{3}{2}{Algorithms}{section.8}{}}
+\newlabel{sec:alg@cref}{{[section][3][]3}{[1][2][]2}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Algorithms}{2}{section.8}\protected@file@percent }
+\newlabel{eq:taylorDecomp}{{3.1}{2}{Algorithms}{equation.9}{}}
+\newlabel{eq:taylorDecomp@cref}{{[equation][1][3]3.1}{[1][2][]2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Example: Root point in an image.}}{3}{figure.10}\protected@file@percent }
+\newlabel{fig.2}{{2}{3}{Example: Root point in an image}{figure.10}{}}
+\newlabel{fig.2@cref}{{[figure][2][]2}{[1][2][]3}}
+\newlabel{equ:propagationRule}{{3.2}{3}{Algorithms}{equation.12}{}}
+\newlabel{equ:propagationRule@cref}{{[equation][2][3]3.2}{[1][3][]3}}
+\newlabel{sec:wRule}{{3.1}{4}{Unconstrained Input Space and $\omega ^2$-Rule}{subsection.13}{}}
+\newlabel{sec:wRule@cref}{{[subsection][1][3]3.1}{[1][3][]4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Unconstrained Input Space and $\omega ^2$-Rule}{4}{subsection.13}\protected@file@percent }
+\@writefile{thm}{\contentsline {proposition}{{Proposition}{3.1}{w-Rule consistency}}{4}{theorem.14}\protected@file@percent }
+\newlabel{prop:wconsistency}{{3.1}{4}{Unconstrained Input Space and $\omega ^2$-Rule}{theorem.14}{}}
+\newlabel{prop:wconsistency@cref}{{[proposition][1][3]3.1}{[1][4][]4}}
+\newlabel{sec:zRule}{{3.2}{4}{Constrained Input Space and the z-Rules}{subsection.15}{}}
+\newlabel{sec:zRule@cref}{{[subsection][2][3]3.2}{[1][4][]4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Constrained Input Space and the z-Rules}{4}{subsection.15}\protected@file@percent }
+\@writefile{thm}{\contentsline {proposition}{{Proposition}{3.2}{z-Rule consistency}}{4}{theorem.16}\protected@file@percent }
+\newlabel{prop:zconsistency}{{3.2}{4}{Constrained Input Space and the z-Rules}{theorem.16}{}}
+\newlabel{prop:zconsistency@cref}{{[proposition][2][3]3.2}{[1][4][]4}}
+\newlabel{sec:deepNeuralNetworks}{{3.3}{4}{Deep Ne

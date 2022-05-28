@@ -24,9 +24,9 @@ class NN:
 
         model = keras.Sequential()
         for l in range(layers):
-            model.add(Dense(neurons[l-1], input_dim=self.x_train.shape[1], activation = "ReLU"))
+            model.add(Dense(neurons[l], input_dim=self.x_train.shape[1], activation = "ReLU"))
             
-        model.add(Dense(1, activation='ReLU', name='output'))
+        model.add(Dense(1, activation='sigmoid', name='output'))
 
         model.compile(loss="mean_squared_error", optimizer= "adam", metrics=['mean_absolute_error','mean_squared_error'])
 

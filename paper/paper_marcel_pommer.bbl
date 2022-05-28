@@ -1,0 +1,10 @@
+\begin{thebibliography}{1}
+
+\bibitem{Montavon.2017}
+{\sc G.~Montavon, S.~Bach, A.~Binder, W.~Samek, and K.-R. M{\"u}ller}, {\em
+  Explaining nonlinear classification decisions with deep taylor
+  decomposition}, Pattern Recognition, 65 (2017), pp.~211--222,
+  \url{https://doi.org/10.1016/j.patcog.2016.11.008},
+  \url{http://arxiv.org/pdf/1512.02479v1}.
+
+\end{thebibliography}

@@ -8,6 +8,7 @@ Created on Sat May  7 12:52:03 2022
 import abc 
 from abc import abstractmethod
 from tabulate import tabulate
+import numpy as np
 
 class explainability(metaclass=abc.ABCMeta):
     
@@ -30,13 +31,12 @@ class explainability(metaclass=abc.ABCMeta):
         
             
     def printExplainability(self, feature_names):
+        relevance_array = self.fit()
         
         table = [["feature", "absolute relevance", "relevance in perc"]]
-        
-        relevance = self.fit()
-        result = self.returnResult()
+
         for index, name in enumerate(feature_names):
-            value = [name, round(relevance[index],4), f"{round(relevance[index]/result[0], 4)*100} %"]
+            value = [name, round(relevance_array[index],4), f"{np.round(relevance_array[index]/self.result, 4)*100} %"]
             table.append(value)
             
         print(tabulate(table))
@@ -68,6 +68,8 @@ class explainability(metaclass=abc.ABCMeta):
             print("The model is consistent!")
         else:
             print("The model is not consistent!")
+            
+            
     
     
     

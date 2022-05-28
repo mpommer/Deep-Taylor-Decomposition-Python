@@ -5,12 +5,12 @@ Created on Sun May  1 17:50:10 2022
 @author: Marcel
 """
  
-from dataReading import data_reading_transformation
-from omega_squared import omega_squared
-from Neural_Network import NN
+from PythonFiles.dataReading import data_reading_transformation
+from PythonFiles.omega_squared import omega_squared
+from PythonFiles.Neural_Network import NN
 import numpy as np
 
-path = "dataTitanic/Titanic"
+path = "data/titanic"
 
 minmaxscaler=True
 
@@ -18,7 +18,7 @@ x_train, y_train, x_test, y_test, feature_name = data_reading_transformation(pat
 
 neural_net = NN(x_train, y_train)
 
-neural_net.fit(layers = 1, neurons = [10])
+neural_net.fit(layers = 1, neurons = [5]*5)
 
 model = neural_net.getModel()
 
@@ -28,7 +28,7 @@ prediction = neural_net.predict(x_test)
 
 #%%
 
-for i in range(10):
+for i in range(1):
     if  prediction[i]>0:
         taylor_dec = omega_squared(model, prediction[i])
         

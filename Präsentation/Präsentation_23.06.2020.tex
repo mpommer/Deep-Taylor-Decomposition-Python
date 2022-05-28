@@ -1,0 +1,276 @@
+% Dieser Text ist urheberrechtlich gesch�tzt
+% Er stellt einen Auszug eines von mir erstellten Referates dar
+% und darf nicht gewerblich genutzt werden
+% die private bzw. Studiums bezogen Nutzung ist frei
+% Nov. 2007
+% Autor: Sascha Frank 
+% Universit�t Freiburg 
+% www.informatik.uni-freiburg.de/~frank/
+
+
+
+
+
+
+
+
+
+\documentclass{beamer}
+\setbeamertemplate{navigation symbols}{}
+    \addtobeamertemplate{frametitle}{\vspace*{-0.1cm}}{\vspace*{-0.5cm}}
+
+\setbeamercolor{frametitle}{fg=black,bg=white}
+
+\usetheme{CambridgeUS}
+\usepackage{ngerman}
+
+\begin{document}
+\title[Deep Taylor Decomposition]{Explaining NonLinear Classification Decisoins with Deep Taylor Decomposition\\
+an anlysis}  
+\author{Marcel Pommer}
+\institute{LMU M\''unchen}
+\date{\today} 
+
+\begin{frame}
+\titlepage
+\end{frame} 
+
+
+\begin{frame}
+\frametitle[Inhaltsverzeichnis]{Inhaltsverzeichnis}
+\vspace{0.4cm}
+\tableofcontents
+\end{frame} 
+
+\AtBeginSection[]
+{
+\begin{frame}
+\frametitle[Inhaltsverzeichnis]{Inhaltsverzeichnis}
+\vspace{0.4cm}
+\tableofcontents[currentsection]
+\end{frame} 
+}
+
+\section{Das Modell} 
+\begin{frame}
+\frametitle{Das Modell} 
+\vspace{0.3cm}
+\begin{itemize}
+\item Eine Ma{\ss}nahme ``0'' oder ``1'' muss getroffen werden.
+\item Die gew\"unschte Ma{\ss}nahme ist abh\"angig vom Zustand $\omega \in \{0,1\}$, wobei $\omega$ mit gleicher Wahrscheinlichkeit den beiden Zust\"anden entspricht.
+\item Jeder Agenten aus $N=\{1,...,n\}$, $n\geq 3$, $n$ ungerade erh\"alt ein Signal $x_i$, welches mit der Wahrscheinlichkeit $\frac{1}{2}<p<1$ dem Zustand $\omega$ entspricht.
+\item Ziel ist die Implementierung der gew\"unschten Ma{\ss}nahme. Gegeben $K$ Signalen entspricht dies:
+\begin{flalign*}
+\hspace{-1cm}
+V(K)&=Prob\textnormal{\{strikte Mehrheit der Agenten erh\"alt das korrekte Signal\}}\\
+&+ \frac{1}{2} Prob\textnormal{\{H\"alfte der Agenten erh\"alt das korrekte Signal\}}
+\end{flalign*}
+\item F\"ur obige Nutzenfunktion gilt $V(2k-1)=V(2k)<V(2k+1)$.
+\end{itemize}
+\end{frame}
+
+
+
+\subsection{Beweis: $V(2k-1)=V(2k)$}
+\begin{frame}\frametitle{Beweis von $V(2k-1)=V(2k)$} 
+\scriptsize
+\begin{flalign*}
+V(2k)&=\sum_{i=0}^{k-1}\binom{2k}{i}p^{2k-i} (1-p)^i + \frac{1}{2}\binom{2k}{k}p^k(1-p)^k\\
+&=p^{2k} + \sum_{i=1}^{k-1}\binom{2k-1}{i}p^{2k-i}(1-p)^i + \sum_{i=1}^{k-1}\binom{2k-1}{i-1}p^{2k-i}(1-p)^i + \frac{1}{2}\binom{2k}{k}p^k(1-p)^k\\
+&=p\cdot \sum_{i=0}^{k-1}\binom{2k-1}{i}p^{2k-1-i}(1-p)^i+\sum_{i=1}^{k-1}\binom{2k-1}{i-1}p^{2k-i}(1-p)^i + \frac{1}{2}\binom{2k}{k}p^k(1-p)^k\\
+&=p\cdot V(2k-1)+(1-p)\sum_{i=0}^{k-2}\binom{2k-1}{i}p^{2k-1-i}(1-p)^i+ \frac{1}{2}\binom{2k}{k}p^k(1-p)^k\\
+&=p\cdot V(2k-1) + (1-p)\biggl[\sum_{i=0}^{k-1}\binom{2k-1}{i}p^{2k-1-i}(1-p)^i-\binom{2k-1}{k-1}p^k(1-p)^{k-1}\biggl]\\
+&+ \frac{1}{2}\binom{2k}{k}p^k(1-p)^k\\ 
+&=p\cdot V(2k-1) + (1-p)\cdot V(2k-1) - \binom{2k-1}{k-1}p^k(1-p)^k+\frac{1}{2}\binom{2k}{k}p^k(1-p)^k\\
+&=V(2k-1)
+\end{flalign*}
+
+\end{frame}
+
+
+
+
+
+
+\subsection{Zwei m\"ogliche Mechanismen}
+\begin{frame}\frametitle{Zwei m\"ogliche Mechanismen} 
+\begin{enumerate}
+\item \textbf{Der direkte simultane Mechanismus:} Alle Agenten sprechen ihre Empfehlung simultan aus, die Mehrheit entscheidet.
+\item \textbf{Der F\"uhrer Mechanismus:} Die Agenten $\{1,...,n-1\}$ sprechen simultan ihre Empfehlung aus, welche an Agent $n$ weitergegeben werden. Dieser entscheidet anhand der Empfehlungen der anderen Agenten und seines eigenen Signals, welche Ma{\ss}nahme getroffen wird.
+\end{enumerate}
+\begin{itemize}
+\item Ein Mechanismus implementiert das \"offentliche Ziel, falls f\"ur jedes sequentielle Gleichgewicht gilt $\pi_1=V(n)$, wobei $\pi_1$ als die Wahrscheinlichkeit definiert ist, dass die gew\"unschte Ma{\ss}nahme getroffen wird.
+\end{itemize}
+\end{frame}
+
+
+
+\section[ausschlie{\ss}lich Allgemeinwohl]{Die Implementierung des PT ist unm\"oglich, wenn alle Agenten ausschlie{\ss}lich am Allgemeinwohl interessiert sind} 
+
+
+
+
+
+
+\subsection[Proposition 1]{Beweisidee Proposition 1}
+\begin{frame}\frametitle{Proposition 1}
+\begin{block}{Proposition 1}
+``In einer Gesellschaft, in der alle Agenten ausschlie{\ss}lich am Allgemeinwohl interessiert sind, hat jeder Mechanismus ein sequentielles Gleichgewicht indem $\pi_1\leq V(1)$.''[GR98]
+\end{block}
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Beweisidee von Proposition 1}
+
+
+
+\begin{enumerate}
+\item Zun\"achst betrachte einen Mechanismus mit einem Schritt: 
+\begin{itemize}
+\item Falls das Ergebnis konstant ist, gilt $\pi_1=V(0)$.
+\item Falls das Ergebnis nicht konstant ist, gibt es einen Agenten $i$, sodass die getroffene Ma{\ss}nahme von seinem Signal abh\"angt. Jedem Agenten $j\neq i$ wird eine Aktion $a_j$, unabh\"angig seines Signals, zugeordnet, sodass das Ergebnis nur vom Signal von Agent $i$ abh\"angig ist.
+\item[$\rightarrow$] Kein Agent kann profitabel abweichen, da $V(1)=V(2)$.
+\end{itemize}
+\item Ein Mechanismus mit zwei Schritten:
+\begin{itemize}
+\item Falls das Ergebnis nach dem ersten Schritt bereits feststeht, handelt es sich um einen Mechanismus mit einem Schritt.
+\item Falls nicht, weise, wie oben erkl\"art, jedem Agenten im zweiten Schritt eine Aktion zu, sodass das Ergebnis nur vom Signal eines Agenten abh\"angig ist.
+\item Weise zudem jedem Agenten im ersten Schritt eine Aktion, unabh\"angig vom Signal zu, sodass der erste Schritt eine Teilgeschichte vom zweiten Schritt ist.
+\end{itemize}
+\end{enumerate}
+\end{frame}
+
+
+
+
+
+
+
+
+
+\section[Das PT und das private Motiv]{Die Implementierung des PT ist m\"oglich, wenn alle Agenten neben dem Allgemeinwohl auch ihr privates Interesse verfolgen}
+\subsection{Der Mechanismus}
+\begin{frame}\frametitle{Der Mechanismus}
+\textbf{Das private Motiv:} Alle Agenten sind neben dem Allgemeinwohl auch daran interessiert, $\pi_{2,i}$, die Wahrscheinlichkeit, dass Ihre Empfehlung mit der getroffenen Ma{\ss}nahme \"ubereinstimmt, zu maximieren.
+\vspace{0.5cm}
+
+\textbf{Schritt 1:} Agent 1 (``controller'') bestimmt eine Menge $S$ von Agenten, wobei $S$ gerade und Agent 1 nicht Teil der Menge $S$ ist.
+
+Gleichzeitig geben alle Agenten bis auf Agent 1 simultan ihre Empfehlung ab.
+
+\textbf{Schritt 2:} Agent 1 erf\"ahrt das Abstimmungsergebnis aus der Menge $S$ und gibt seine eigene Stimme ab.
+\begin{itemize}
+\item[$\rightarrow$]Die Mehrheit aus $S \cup \{1\} $ entscheidet \"uber die Ma{\ss}nahme.
+\end{itemize}
+\end{frame}
+
+
+
+
+\subsection{Proposition 2}
+\begin{frame}\frametitle{Proposition 2}
+\begin{block}{Proposition 2}
+``In einer Gesellschaft, in der alle Agenten strikt positive Pr\"aferenzen bez\"uglich dem Allgemeinwohl und ihrem privatem Motiv haben, implementiert obiger Mechanismus das PT, es gilt $\pi_1=V(n)$ f\"ur jedes sequentielle Gleichgewicht.''[GR98]\\
+Agent 1 w\"ahlt $S=N \setminus \{1\}$, alle Agenten $i\in \{2,...,n\}$ spielen ``T'', Agent 1 folgt der Mehrheit und spielt im Fall eines Unentschieden selber ``T''.
+\end{block}
+\end{frame}
+
+\subsubsection{Hilfslemma 1}
+\begin{frame}\frametitle{Hilfslemma 1}
+\begin{block}{Hilfslemma 1}
+ Sei $S$ eine Teilmenge aller Agenten und ungerade und sei $s_i=0$ die Strategie von Agent $i$. Zudem sei $N_x$ die Anzahl Agenten, die die Strategie $x\in \{``T\dq,``0\dq,``1\dq\}$ verfolgen. \\
+\textbf{Behauptung:} Falls $N_0>N_1$, f\"uhrt ein Wechsel der Strategie von Agent $i$ zu ``T'' zu einer Erh\"ohung von $\pi_1$. Falls $N_0=N_1$, beeinflusst ein Wechsel von Agent $i$ zur Strategie ``T'' $\pi_1$ nicht.
+\end{block}
+\end{frame}
+
+
+\begin{frame}\frametitle{Beweis Hilfslemma 1}
+\textbf{Beweis:} Ich nutze, dass ``c'' mit der Wahrscheinlichkeit $\frac{1}{2}$ dem Zustand $\omega$ entspricht.
+\begin{flalign*}
+V(2k) \cup ``c\dq  &= \frac{1}{2}\sum_{i=0}^{k}\binom{2k}{i}p^{2k-i}(1-p)^i + \frac{1}{2}\sum_{i=0}^{k-1}\binom{2k}{i}p^{2k-i}(1-p)^i\\
+&=\sum_{i=0}^{k-1}\binom{2k}{i}p^{2k-i}(1-p)^i + \frac{1}{2}\binom{2k}{k}p^{2k-i}(1-p)^i\\
+&=V(2k)\\
+&=V(2k-1)\\
+&<V(2k+1)
+\end{flalign*}
+\end{frame}
+
+
+\subsubsection{Beweisidee Proposition 2}
+\begin{frame}\frametitle{Beweisidee Proposition 2}
+\begin{enumerate}
+\item Agent 1 w\"ahlt $S$, sodass $S_{NT}=\varnothing$.
+\item [$\rightarrow$] folgt, da $V(2k-1)=V(2k)<V(2k) \cup ``NT\dq$
+\item Agent 1 w\"ahlt $S$, sodass $\vert \vert S_0 \vert - \vert S_1 \vert \vert = k \leq 1$.
+\item [$\rightarrow$] falls $k>1$, ist das Ergebnis in eine Richtung beeinflusst
+\item Mit Hilfslemma 1 folgt, dass $k=0$. Es gibt einen Agenten $i \in S_c$, der durch ein Abweichen auf ``T'' $\pi_1$ und $\pi_{2,i}$ erh\"oht.
+\item Mit Hilfslemma 1 folgt, $S_c=\varnothing$. Jeder Agent $i \in S_c$ kann durch ein Abweichen $\pi_{2,i}$ erh\"ohen, ohne $\pi_1$ zu beeinflussen.
+\item Jeder Agent $i \notin S$ spielt ``T'', da seine Srategie $\pi_1$ nicht beeinflusst, aber dadurch $\pi_{2,i}$ maximiert wird.
+\item [$\rightarrow$] Es folgt, dass $S=\{2,...,n\}$ und alle Agenten in $S$ ``T'' spielen. Agent 1 folgt der Mehrheit und im Fall eines Unentschieden, spielt er ``T''.
+\end{enumerate}
+\end{frame}
+
+
+
+
+
+
+
+
+
+\section[alternatives privates Motiv]{Diskussion: Ein Vorschlag zur Umformulierung des privaten Motivs}
+
+\subsection{Ein alternatives privates Motiv}
+\begin{frame}\frametitle{Ein alternatives privates Motiv}
+\vspace{-1.2cm}
+\textbf{Das alternative private Motiv:} Jeder Agent ist neben dem Allgemeinwohl daran interessiert, dass sich seine Empfehlung ex post als richtig erweist.
+\vspace{0.4cm}
+\begin{block}{Behauptung}
+Der in Kapitel drei definierte Mechanismus implementiert das PT f\"ur jedes Profil von Pr\"aferenzen, das strikt wachsend im PT und dem oben definierten privaten Motiv ist.
+\end{block}
+
+
+\end{frame}
+
+
+
+
+
+\begin{frame}\frametitle{Beweis}
+\vspace{0.4cm}
+Der Beweis erfolgt weitestgehend analog zum Beweis von Proposition 2. Im Folgenden die Unterschiede:
+\begin{itemize}
+\item Es gilt $\pi_1 \geq V(1)$, aber $\pi_{2,1}<1$. Trotzdem steht das private Motiv von Agent 1 dem \"offentlichen nicht entgegen.
+\item [$\rightarrow$] Agent 1 maximiert $\pi_{2,1}<1$, indem er $\pi_1$ maximiert, damit w\"ahlt er $S$ so informativ wie m\"oglich.
+\item Analog zum Beweis von Proposition 2 folgt damit $S_{NT}=\varnothing$.
+\item Mit Hilfslemma 1 folgt ebenfalls, dass $S_c=\varnothing$, da ein Agent durch einen Wechsel von der Strategie ``c'', zur Strategie ``T'', $\pi_{2,i}$ von $\frac{1}{2}$ auf $p$ erh\"oht.
+\item Da alle Agenten $i\notin S$ ausschlie{\ss}lich daran interessiert sind, dass sich ihre Empfehlung ex post als richtig erweist, spielen sie ``T''.
+\item [$\rightarrow$] Damit folgt, dass Agent 1 $S=N\setminus \{1\}$ w\"ahlt und alle Agenten in $S$ spielen ``T''. Agent 1 folgt der Mehrheit und im Fall eines Unentschieden folgt er seinem eigenen Signal.
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+
+
+\section{Literatur}
+\begin{frame}
+\frametitle{Literatur}
+\footnotesize{
+\begin{thebibliography}{99}
+\bibitem[wik]{p1} [GR98] Jacob Glazer and Ariel Rubinstein. Motives and implementation: On the design of mechanism to elicit opinions. Journal of economic Theory, 79(2):157-173, 1998.
+\end{thebibliography}
+}
+\end{frame}
+
+
+
+
+
+
+\end{document}

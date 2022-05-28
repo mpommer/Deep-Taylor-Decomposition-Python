@@ -5,7 +5,7 @@ Created on Sun May  1 17:58:19 2022
 @author: marce
 """
 import numpy as np
-from explainability_abstract_class import explainability
+from PythonFiles.explainability_abstract_class import explainability
 
 class omega_squared(explainability):
     
