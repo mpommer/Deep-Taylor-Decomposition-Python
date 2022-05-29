@@ -1,19 +1,3 @@
-% Dieser Text ist urheberrechtlich gesch�tzt
-% Er stellt einen Auszug eines von mir erstellten Referates dar
-% und darf nicht gewerblich genutzt werden
-% die private bzw. Studiums bezogen Nutzung ist frei
-% Nov. 2007
-% Autor: Sascha Frank 
-% Universit�t Freiburg 
-% www.informatik.uni-freiburg.de/~frank/
-
-
-
-
-
-
-
-
 
 \documentclass{beamer}
 \setbeamertemplate{navigation symbols}{}
@@ -23,21 +7,35 @@
 
 \usetheme{CambridgeUS}
 \usepackage{ngerman}
+\renewcommand{\figurename}{Figure}
+\renewcommand{\tablename}{Tabel}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
 
 \begin{document}
-\title[Deep Taylor Decomposition]{Explaining NonLinear Classification Decisoins with Deep Taylor Decomposition\\
-an anlysis}  
+\title[Deep Taylor Decomposition]{Explaining NonLinear Classification Decisions with Deep Taylor Decomposition\\
+analysis}  
 \author{Marcel Pommer}
-\institute{LMU M\''unchen}
+\institute{LMU M\"unchen}
 \date{\today} 
 
 \begin{frame}
 \titlepage
 \end{frame} 
 
+\begin{frame}
+\frametitle[Explainability]{Explainability}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{image/introduction_image}
+\end{center}
+\vspace{0.25cm}
+Deep neural networks have great performance on a variety of problems \\
+\textbf{but} how can we justify decisions made by complex deep architectures?\\
+\end{frame} 
+
 
 \begin{frame}
-\frametitle[Inhaltsverzeichnis]{Inhaltsverzeichnis}
+\frametitle[Table of Contents]{Table of Contents}
 \vspace{0.4cm}
 \tableofcontents
 \end{frame} 
@@ -45,171 +43,457 @@ an anlysis}
 \AtBeginSection[]
 {
 \begin{frame}
-\frametitle[Inhaltsverzeichnis]{Inhaltsverzeichnis}
+\frametitle[Table of Contents]{Table of Contents}
 \vspace{0.4cm}
 \tableofcontents[currentsection]
 \end{frame} 
 }
 
-\section{Das Modell} 
+
+\section[Introduction]{Introduction}
 \begin{frame}
-\frametitle{Das Modell} 
-\vspace{0.3cm}
+\frametitle{Introduction} 
+\textbf{Deep neural networks revolutionized amongst others the field of}\\
+\vspace{0.25cm}
+       \begin{columns}[T]
+          \column{0.65\textwidth}
+             \centering
+             \includegraphics[height=5cm, width=8cm]{image/NLP_chatbot}
+           \column{0.35\textwidth}
+			\begin{itemize}
+			\item[--] Image recognition
+			\item[--] Natural language processing
+			\item[--] Human action recognition
+			\item[--] Physics
+			\item[--] Finance
+			\item[--] ...
+			\end{itemize}
+         \end{columns} 
+\vspace{0.5cm}
+With one major drawback $\rightarrow$ \textbf{lack of transparency}
+\end{frame}
+
+
+
+\subsection[interpretable classifier]{Interpretable Classifier}
+\begin{frame}
+\frametitle{Interpretable Classifier} 
+\vspace{0.5cm}
+Explanation of non-linear classification in terms of the inputs\\
+$\rightarrow$ A classifier should not only provide a result but also a reasoning
+
+\begin{center}
+\includegraphics[height=5cm, width=8cm]{image/cancer}
+\end{center}
+
+We do not only need to know if the patient has cancer but also where exactly it is located
+
+\end{frame}
+
+
+
+\subsection[General Idea]{General Idea}
+
+
+\begin{frame}
+\frametitle{General Idea} 
+\vspace{0.35cm}
+To accomplish the task of explainability we map relevance from the output to the input features
+
+\vspace{0.25cm}
+
+\begin{center}
+\begin{figure}
+\includegraphics[height=4.5cm, width=11cm]{image/fig._1_example}
+\caption{NN detecting 0 while distrected by 5}
+\end{figure}
+\end{center}
+
+\end{frame}
+
+
+
+
+\section[Pixel-Wise Decomposition]{Pixel-Wise Decomposition}
+
+\subsection[Mathematical Framework and Definitions]{Mathematical Framework and Definitions}
+
+\begin{frame}
+\frametitle{Mathematical Framework}
+\vspace{0.5cm} 
+In the context of image classification we define the following mathematical framework
 \begin{itemize}
-\item Eine Ma{\ss}nahme ``0'' oder ``1'' muss getroffen werden.
-\item Die gew\"unschte Ma{\ss}nahme ist abh\"angig vom Zustand $\omega \in \{0,1\}$, wobei $\omega$ mit gleicher Wahrscheinlichkeit den beiden Zust\"anden entspricht.
-\item Jeder Agenten aus $N=\{1,...,n\}$, $n\geq 3$, $n$ ungerade erh\"alt ein Signal $x_i$, welches mit der Wahrscheinlichkeit $\frac{1}{2}<p<1$ dem Zustand $\omega$ entspricht.
-\item Ziel ist die Implementierung der gew\"unschten Ma{\ss}nahme. Gegeben $K$ Signalen entspricht dies:
-\begin{flalign*}
-\hspace{-1cm}
-V(K)&=Prob\textnormal{\{strikte Mehrheit der Agenten erh\"alt das korrekte Signal\}}\\
-&+ \frac{1}{2} Prob\textnormal{\{H\"alfte der Agenten erh\"alt das korrekte Signal\}}
-\end{flalign*}
-\item F\"ur obige Nutzenfunktion gilt $V(2k-1)=V(2k)<V(2k+1)$.
+\item Positive valued function $f:\mathbb{R}^d\to \mathbb{R}^+$, where the output $f(x)$ defines either the probability that the object is present or the quantity of the object in question
+\item[$\rightarrow$] $f(x)>0$ expresss the presence of the object  
+\item Input $x \in \mathbb{R}^d$, composable in a set of pixel values $x=\{x_p\}$
+\item Relevance score $R_p(x)$ indicating the relevance of each pixel
+\item[$\rightarrow$] The relevance score can be displayed in a heatmap denoted by $R(x) = \{R_P(x)\}$
 \end{itemize}
+
+\begin{figure}
+\includegraphics[height=2cm, width=2cm]{image/heatmap_example}
+\end{figure}
+
 \end{frame}
 
 
 
-\subsection{Beweis: $V(2k-1)=V(2k)$}
-\begin{frame}\frametitle{Beweis von $V(2k-1)=V(2k)$} 
-\scriptsize
+
+\begin{frame}
+\frametitle{Definitions}
+\begin{block}{Definition 1}
+A heatmapping $R(x)$ is \underline{conservative} if the sum of assigned relevances in the pixel space corresponds to the total relevance detected by the model, that is
+\begin{equation}
+\forall x: f(x)=\sum_pR_p(x)
+\end{equation}
+\end{block}
+
+\begin{block}{Definition 2}
+A heatmapping $R(x)$ is  \underline{positive} if all values forming the heatmap are greater or equal to zero, that is:
+\begin{equation}
+\forall x,p: R_p(x) \geq 0
+\end{equation}
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Definitions}
+Further we test all algorithms for compliance with definition 1 and 2 why we introduce the definition of consistency which forth on is a measure of correctness of a technique\\
+%\vspace{0.1cm}
+
+
+\begin{block}{Definition 3}
+A heatmapping $R(x)$ is  \underline{consistent} if it is  \textit{conservative} and  \textit{positive}. That is, it is consistent if it complies with Definitions 1 and 2.
+\end{block}
+
+
+\vspace{0.5cm}
+However consistency is not a measure of quality which can be seen easily on the following example which complies with definition 3
+\begin{equation*}
+\forall p: R_p(x) =\frac{1}{d} \dot f(x) ,
+\end{equation*}
+where d denotes the number of pixels
+\end{frame}
+
+
+
+\subsection[Methodology]{Methodology}
+
+\begin{frame}
+\frametitle{Taylor Expansion}
+\vspace{0.35cm}
+First order taylor expansion at root point $\tilde{x}$
 \begin{flalign*}
-V(2k)&=\sum_{i=0}^{k-1}\binom{2k}{i}p^{2k-i} (1-p)^i + \frac{1}{2}\binom{2k}{k}p^k(1-p)^k\\
-&=p^{2k} + \sum_{i=1}^{k-1}\binom{2k-1}{i}p^{2k-i}(1-p)^i + \sum_{i=1}^{k-1}\binom{2k-1}{i-1}p^{2k-i}(1-p)^i + \frac{1}{2}\binom{2k}{k}p^k(1-p)^k\\
-&=p\cdot \sum_{i=0}^{k-1}\binom{2k-1}{i}p^{2k-1-i}(1-p)^i+\sum_{i=1}^{k-1}\binom{2k-1}{i-1}p^{2k-i}(1-p)^i + \frac{1}{2}\binom{2k}{k}p^k(1-p)^k\\
-&=p\cdot V(2k-1)+(1-p)\sum_{i=0}^{k-2}\binom{2k-1}{i}p^{2k-1-i}(1-p)^i+ \frac{1}{2}\binom{2k}{k}p^k(1-p)^k\\
-&=p\cdot V(2k-1) + (1-p)\biggl[\sum_{i=0}^{k-1}\binom{2k-1}{i}p^{2k-1-i}(1-p)^i-\binom{2k-1}{k-1}p^k(1-p)^{k-1}\biggl]\\
-&+ \frac{1}{2}\binom{2k}{k}p^k(1-p)^k\\ 
-&=p\cdot V(2k-1) + (1-p)\cdot V(2k-1) - \binom{2k-1}{k-1}p^k(1-p)^k+\frac{1}{2}\binom{2k}{k}p^k(1-p)^k\\
-&=V(2k-1)
+ f(x) & =f(\tilde{x}) + \left( \frac{\partial f}{\partial x}\Big|_{x=\tilde{x}}\right)^T \cdot (x-\tilde{x}) + \epsilon\\
+       & = 0 + \sum_p \underbrace{\frac{\partial f}{\partial x_p}\Big|_{x=\tilde{x}} \cdot (x_p-\tilde{x_p})}_{R_p(x)} + \epsilon  
+\end{flalign*}
+The challenge of finding a root point
+ \begin{columns}
+          \begin{column}[T]{5.5cm}
+             \begin{figure}
+             \includegraphics[height=2.75cm, width=6cm]{image/fig._2_example_root_point}
+             \end{figure}
+            \end{column} 
+            \begin{column}[T]{6.2cm}
+			\begin{itemize}
+			\item Potentially more than one root point
+			\item Remove object but deviate as few as possible
+			\item[$\rightarrow$] $\min_{\xi} ||\xi-x||^2 \text{ subject to } f(\xi)=0$
+			\end{itemize}
+	\end{column}
+\end{columns} 
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Sensitivity Analysis}
+Choose a root point at infinitisimally small distance from the actual point, i.e. $\xi = x- \delta \frac{\partial f}{\partial x}$\\
+If we assume a locally constant function we get
+\begin{flalign*}
+ f(x) & =f(\xi) + \left( \frac{\partial f}{\partial x}\Big|_{x=\xi}\right)^T \cdot (x- (x- \delta \frac{\partial f}{\partial x})) + 0\\
+       & = f(\xi) + \delta \left( \frac{\partial f}{\partial x}\right)^T  \frac{\partial f}{\partial x} + 0\\
+       & = f(\xi) + \sum_p \underbrace{ \delta \left( \frac{\partial f}{\partial x}\right)^2}_{R_p} + 0
 \end{flalign*}
 
+
+\begin{itemize}
+\item The heatmap is positive but not conservative
+\item Measure local effect
+\end{itemize}
+
+
+
 \end{frame}
 
 
 
+\begin{frame}
+\frametitle{Deep Taylor Decomposition}
+\vspace{0.25cm}
+\begin{figure}
+\includegraphics[height=2.75cm, width=11cm]{image/deep_taylor_decomposition_example}
+ \end{figure}
+We view each layer as a seperate function and write the Taylor decomposition of $\sum_j R_j \text{ at } \{x_i\}$ as
+\begin{align*}
+    \sum_j R_j &= \left( \frac{\partial (\sum_j R_j)}{\partial \{x_i\}}\Big|_{\{\tilde{x_i}\}}\right)^T \cdot (\{x_i\}-\{\tilde{x}\}) + \epsilon\\
+    &= \sum_i \sum_j \frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}\}} \cdot (x_i-\tilde{x_i}) + \epsilon
+\end{align*}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Deep Taylor Decomposition}
+\vspace{0.25cm}
+\begin{figure}
+\includegraphics[height=2.75cm, width=11cm]{image/deep_taylor_decomposition_example}
+ \end{figure}
+
+\begin{itemize}
+\item  If each local Taylor decomposition is \textit{conservative} then the chain of equalitis is also \textit{conservative} (Layer-wise relevance conservation)
+\item[$\rightarrow$] $R_f = ...= \sum_i R_i = ... = \sum_p R_p$
+\item  If each local Taylor decomposition is \textit{positive} then the chain of equalitis is also \textit{positive} 
+\item[$\rightarrow$] $R_f,...,\{R_i\},...,\{R_P\} \geq 0$
+\item If each local Taylor decomposition is \textit{consistent} then the chain of equalitis is also \textit{consistent} 
+\end{itemize}
+
+
+\end{frame}
+
+\section[One-Layer Networks]{Application to One-Layer Networks and Root Finding}
 
 
 
-\subsection{Zwei m\"ogliche Mechanismen}
-\begin{frame}\frametitle{Zwei m\"ogliche Mechanismen} 
+\begin{frame}
+\frametitle{Setting}
+\vspace{0.2cm}
+Consider a simple detection-pooling one layer neural network with
+ \begin{columns}
+          \begin{column}[T]{5.5cm}
+		\begin{align*}
+		x_j &= \max(0, \sum_i x_iw_{ij} + b_j)\\
+		x_k &= \sum_j x_j, \ b_j \leq 0, \forall j
+		\end{align*}
+            \end{column} 
+            \begin{column}[T]{6.5cm}
+			\begin{figure}
+				\includegraphics[height=2.5cm, width=6cm]{image/one_layer_nn}
+			\end{figure}
+	\end{column}
+\end{columns} 
 \begin{enumerate}
-\item \textbf{Der direkte simultane Mechanismus:} Alle Agenten sprechen ihre Empfehlung simultan aus, die Mehrheit entscheidet.
-\item \textbf{Der F\"uhrer Mechanismus:} Die Agenten $\{1,...,n-1\}$ sprechen simultan ihre Empfehlung aus, welche an Agent $n$ weitergegeben werden. Dieser entscheidet anhand der Empfehlungen der anderen Agenten und seines eigenen Signals, welche Ma{\ss}nahme getroffen wird.
+\item $R_k = x_k$ and thus $R_k = \sum_j x_j$
+\item  Chose a root point and redistribute $R_k$ on neurons $x_j$\\
+$\rightarrow$ $R_j = \frac{\partial R_k}{\partial x_j}\Big|_{\{\tilde{x}_j\}} \cdot (x_j - \tilde{x}_j) $, with $\{x_j\}=0$
+\item Since $\frac{\partial R}{\partial x_j}=1$ we obtain $R_j = x_j$
+\item Apply Taylor decomposition another time and get\\
+ $R_i = \sum_j\frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i\}^{(j)}} \cdot (x_i - \tilde{x}_i^{(j)})$
 \end{enumerate}
-\begin{itemize}
-\item Ein Mechanismus implementiert das \"offentliche Ziel, falls f\"ur jedes sequentielle Gleichgewicht gilt $\pi_1=V(n)$, wobei $\pi_1$ als die Wahrscheinlichkeit definiert ist, dass die gew\"unschte Ma{\ss}nahme getroffen wird.
-\end{itemize}
+
+
+
 \end{frame}
 
+
+\begin{frame}
+\frametitle{Derivation of Propagation Rules}
+Given $R_j = \max(0, \sum_i x_iw_{ij} + b_j)$ and $b_j <0$ and a search direction $\{v_i\}^{(j)}$ in the input space such that
+\vspace{-0.35cm}
+\begin{equation}
+\{\tilde{x}\}^{(j)} = \{x_i\} + t \{v_i \} ^{(j)} \Leftrightarrow t = \frac{\tilde{x_i}^{(j)} - x_i}{v_i^{(j)}}
+\label{equ:search_direction}
+\end{equation}
+\vspace{-0.35cm}
+
+If the data point itself is not a root point, i.e. $\sum_i x_i w_{ij} + b_j>0$ the nearest root along $\{v_i\}^{(j)}$ is given by the intersection of equation \eqref{equ:search_direction} and $\sum_i\tilde{ x_i}^{(j)} w_{ij} + b_j=0$ which can be resolved to 
+\vspace{-0.25cm}
+\begin{align*}
+0 &= \sum_i\{x_i\}w_{ij} + b_j + \sum_i v_i^{(j)} t \\
+x_i - \tilde{x_i}^{(j)} & = \frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}
+\end{align*}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Derivation of Propagation Rules}
+\vspace{0.4cm}
+Starting from the Taylor expansion we can plug in 
+\begin{align*}
+x_i - \tilde{x_i}^{(j)} = \frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}
+\end{align*}
+\vspace{-0.2cm}
+To get
+\vspace{-0.2cm}
+\begin{align*}
+R_i & = \sum_j \frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i^{(j)}} \dot (x_i - \tilde{x}_i^{(j)})= \sum_j w_{ij}\frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}\\
+&= \sum_j w_{ij}\frac{v_i^{(j)} w_{ij}}{\sum_i v_i^{(j)} w_{ij}} R_j \numberthis \label{equ:relevance_model}
+\end{align*}
+
+The relevance propagation rule can now easily be calculated by defining
+\begin{enumerate}
+	\item Define a segment with search directio $\{v_i\}^{(j)}$
+	\item The line lies inside the input domain and contains a root point
+	\item Inject search direction in equation \eqref{equ:relevance_model}
+\end{enumerate}
+\end{frame}
+
+
+
+
+\subsection[$w^2$-rule]{$w^2$-rule}
+
+
+\begin{frame}
+\frametitle{$w^2$-rule $\mathcal{X}=\mathbb{R}^d$}
+Choose root point which is nearest in euclidean sense\\
+\begin{enumerate}
+	\item Search direction $\{v_i\}^{(j)} = w_{ij}$
+	\item No domain restriction
+	\item Inject search direction in equation \eqref{equ:relevance_model}
+\end{enumerate}
+
+\begin{block}{$w^2$-rule}
+\begin{equation*}
+R_i =\sum_j\frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i\}^{(j)}} \cdot (x_i - \tilde{x}_i^{(j)}) =  \sum_j\frac{w_{ij}^2}{\sum_i w_{ij}^2} R_j
+\end{equation*}
+\end{block}
+
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{$w^2$-rule $\mathcal{X}=\mathbb{R}^d$}
+\vspace{0.3cm}
+\begin{block}{Proposition 1}
+For all function $g \in G$, the deep Taylor decomposition with the $w^2$-rule is consistent.
+\end{block}
+\textbf{Proof}\\
+\begin{enumerate}
+\item \textit{Conservative}
+\begin{align*}
+\sum_i R_i &= \sum_i\Big(\sum_j \frac{w_{ij}^2}{\sum_iw_{ij}^2}R_j\Big)\\
+   		&= \sum_j \frac{\sum_i w_{ij}^2}{\sum_iw_{ij}^2}R_j = \sum_j R_j = \sum_j x_j = f(x)
+\end{align*}
+\item \textit{Positive}
+\begin{align*}
+R_i = \sum_j \frac{w_{ij}^2}{\sum_i w_{ij}^2}R_j = \sum_j \underbrace{w_{ij}^2}_{>0}  \underbrace{\frac{1}{\sum_i w_{ij}^2}}_{>0}  \underbrace{R_j}_{\geq 0} \geq 0
+\end{align*}
+\end{enumerate}
+
+
+\end{frame}
+
+
+
+
+\subsection[$z^+$-rule]{$z^+$-rule}
+
+
+\begin{frame}
+\frametitle{$z^+$-rule $\mathcal{X}=\mathbb{R}_+^d$}
+\vspace{0.25cm}
+Search for a root point on the segment $(\{x_i 1_{w_{ij}<0}\},\{x_i\})\subset \mathbb{R}_+^d$\\
+\begin{enumerate}
+	\item Search direction $\{v_i\}^{(j)} = x_i - x_i 1_{w_{ij}<0} = x_i 1_{w_{ij}\geq0}$
+	\item If $\{x_i\} \in \mathbb{R}_+^d$ so is the whole domain, further for $w_{ij}^-=\min(0,w_{ij})$
+	\
+	\begin{align*}
+		R_j(\{x_i1_{w_{ij}<0}\}) = \max(0, \sum_i x_i 1_{w_{ij}<0} w_{ij} + b_j)\\
+		= \max(0, \sum_i x_i  w_{ij}^- + b_j) = 0
+	\end{align*}
+	
+	\item Inject search direction in equation \eqref{equ:relevance_model}
+\end{enumerate}
+
+
+\begin{block}{$z^+$-rule}
+\begin{equation*}
+R_i =  \sum_j \frac{x_i w_{ij}^+}{\sum_{i'} x_{i'} w_{i'j}^+} R_j
+\end{equation*}
+\end{block}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{$z^+$-rule $\mathcal{X}=\mathbb{R}^d_+$}
+\vspace{-0.4cm}
+\begin{block}{Proposition 2}
+For all function $g \in G$ and data points $\{x_i\} \in \mathbb{R}_+^d$, the deep Taylor decomposition with the $z^+$-rule is consistent.
+\end{block}
+\vspace{0.5cm}
+\textbf{Proof}\\
+If $\sum_i x_i w_{ij}^+ >0$ the same proof as for the $w^2$-rule applies, if $\sum_i x_i w_{ij}^+ =0$ follows that $\forall i: x_i w_{ij} \leq0$ and 
+
+\begin{align*}
+ R_j = x_j = 0
+\end{align*}
+and there is no relevance to redistribute to the lower layers.
+
+
+\end{frame}
+
+
+
+
+
+
+\subsection[$z^b$-rule]{$z^b$-rule}
+
+
+\begin{frame}
+\frametitle{$z^b$-rule $\mathcal{X}=\mathcal{B}$}
+\vspace{0.4cm}
+Often we have a bounded input space $\mathcal{B} = \{\{x_i\} : \forall_{i=1}^d l_i\leq x_i \leq h_i\} $ and a segment $(\{l_i 1_{w_{ij}>0} + h_i 1_{w_{ij}<0}\},\{x_i\})\subset \mathcal{B}$\\
+\begin{enumerate}
+	\item Search direction $\{v_i\}^{(j)} = x_i - x_i 1_{w_{ij}<0} = x_i 1_{w_{ij}\geq0}$
+	\item If $\{x_i\} \in \mathcal{B}$ so is the whole domain, further for $w_{ij}^-=\min(0,w_{ij})$ and $w_{ij}^+=\max(0,w_{ij})$
+	\vspace{-0.25cm}
+	\begin{align*}
+		R_j(\{l_i 1_{w_{ij}>0} + h_i 1_{w_{ij}<0}\}) &= \max(0, \sum_i l_i 1_{w_{ij}>0} w_{ij} + h_i 1_{w_{ij}<0} w_{ij} + b_j)\\
+		&=\max(0, \sum_i l_i w_{ij}^+ + h_i w_{ij}^- + b_j)= 0
+	\end{align*}
+	\vspace{-0.25cm}
+	\item Inject search direction in equation \eqref{equ:relevance_model}
+\end{enumerate}
+\vspace{-0.25cm}
+
+\begin{block}{$z^b$-rule}
+\begin{equation*}
+R_i =  \sum_j \frac{x_i w_{ij} - l_i w_{ij}^+ - h_i w_{ij}^-}{\sum_{i'} x_{i'} w_{i'j}  - l_i w_{i'j}^+ - h_i w_{i'j}^-} R_j
+\end{equation*}
+\end{block}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{$z^b$-rule $\mathcal{X}=\mathcal{B}$}
+\vspace{-0.4cm}
+\begin{block}{Proposition 3}
+For all function $g \in G$ and data points $\{x_i\} \in \mathcal{B}$, the deep Taylor decomposition with the $z^b$-rule is consistent.
+\end{block}
+\vspace{0.5cm}
+\textbf{Proof}\\
+Since the proof is similar to the proofs of proposition 1 and 2 but lenghty I refer to the literature.
+
+\end{frame}
 
 
 \section[ausschlie{\ss}lich Allgemeinwohl]{Die Implementierung des PT ist unm\"oglich, wenn alle Agenten ausschlie{\ss}lich am Allgemeinwohl interessiert sind} 
 
 
 
-
-
-
-\subsection[Proposition 1]{Beweisidee Proposition 1}
-\begin{frame}\frametitle{Proposition 1}
-\begin{block}{Proposition 1}
-``In einer Gesellschaft, in der alle Agenten ausschlie{\ss}lich am Allgemeinwohl interessiert sind, hat jeder Mechanismus ein sequentielles Gleichgewicht indem $\pi_1\leq V(1)$.''[GR98]
-\end{block}
-\end{frame}
-
-
-
-\begin{frame}\frametitle{Beweisidee von Proposition 1}
-
-
-
-\begin{enumerate}
-\item Zun\"achst betrachte einen Mechanismus mit einem Schritt: 
-\begin{itemize}
-\item Falls das Ergebnis konstant ist, gilt $\pi_1=V(0)$.
-\item Falls das Ergebnis nicht konstant ist, gibt es einen Agenten $i$, sodass die getroffene Ma{\ss}nahme von seinem Signal abh\"angt. Jedem Agenten $j\neq i$ wird eine Aktion $a_j$, unabh\"angig seines Signals, zugeordnet, sodass das Ergebnis nur vom Signal von Agent $i$ abh\"angig ist.
-\item[$\rightarrow$] Kein Agent kann profitabel abweichen, da $V(1)=V(2)$.
-\end{itemize}
-\item Ein Mechanismus mit zwei Schritten:
-\begin{itemize}
-\item Falls das Ergebnis nach dem ersten Schritt bereits feststeht, handelt es sich um einen Mechanismus mit einem Schritt.
-\item Falls nicht, weise, wie oben erkl\"art, jedem Agenten im zweiten Schritt eine Aktion zu, sodass das Ergebnis nur vom Signal eines Agenten abh\"angig ist.
-\item Weise zudem jedem Agenten im ersten Schritt eine Aktion, unabh\"angig vom Signal zu, sodass der erste Schritt eine Teilgeschichte vom zweiten Schritt ist.
-\end{itemize}
-\end{enumerate}
-\end{frame}
-
-
-
-
-
-
-
-
-
-\section[Das PT und das private Motiv]{Die Implementierung des PT ist m\"oglich, wenn alle Agenten neben dem Allgemeinwohl auch ihr privates Interesse verfolgen}
-\subsection{Der Mechanismus}
-\begin{frame}\frametitle{Der Mechanismus}
-\textbf{Das private Motiv:} Alle Agenten sind neben dem Allgemeinwohl auch daran interessiert, $\pi_{2,i}$, die Wahrscheinlichkeit, dass Ihre Empfehlung mit der getroffenen Ma{\ss}nahme \"ubereinstimmt, zu maximieren.
-\vspace{0.5cm}
-
-\textbf{Schritt 1:} Agent 1 (``controller'') bestimmt eine Menge $S$ von Agenten, wobei $S$ gerade und Agent 1 nicht Teil der Menge $S$ ist.
-
-Gleichzeitig geben alle Agenten bis auf Agent 1 simultan ihre Empfehlung ab.
-
-\textbf{Schritt 2:} Agent 1 erf\"ahrt das Abstimmungsergebnis aus der Menge $S$ und gibt seine eigene Stimme ab.
-\begin{itemize}
-\item[$\rightarrow$]Die Mehrheit aus $S \cup \{1\} $ entscheidet \"uber die Ma{\ss}nahme.
-\end{itemize}
-\end{frame}
-
-
-
-
-\subsection{Proposition 2}
-\begin{frame}\frametitle{Proposition 2}
-\begin{block}{Proposition 2}
-``In einer Gesellschaft, in der alle Agenten strikt positive Pr\"aferenzen bez\"uglich dem Allgemeinwohl und ihrem privatem Motiv haben, implementiert obiger Mechanismus das PT, es gilt $\pi_1=V(n)$ f\"ur jedes sequentielle Gleichgewicht.''[GR98]\\
-Agent 1 w\"ahlt $S=N \setminus \{1\}$, alle Agenten $i\in \{2,...,n\}$ spielen ``T'', Agent 1 folgt der Mehrheit und spielt im Fall eines Unentschieden selber ``T''.
-\end{block}
-\end{frame}
-
-\subsubsection{Hilfslemma 1}
-\begin{frame}\frametitle{Hilfslemma 1}
-\begin{block}{Hilfslemma 1}
- Sei $S$ eine Teilmenge aller Agenten und ungerade und sei $s_i=0$ die Strategie von Agent $i$. Zudem sei $N_x$ die Anzahl Agenten, die die Strategie $x\in \{``T\dq,``0\dq,``1\dq\}$ verfolgen. \\
-\textbf{Behauptung:} Falls $N_0>N_1$, f\"uhrt ein Wechsel der Strategie von Agent $i$ zu ``T'' zu einer Erh\"ohung von $\pi_1$. Falls $N_0=N_1$, beeinflusst ein Wechsel von Agent $i$ zur Strategie ``T'' $\pi_1$ nicht.
-\end{block}
-\end{frame}
-
-
-\begin{frame}\frametitle{Beweis Hilfslemma 1}
-\textbf{Beweis:} Ich nutze, dass ``c'' mit der Wahrscheinlichkeit $\frac{1}{2}$ dem Zustand $\omega$ entspricht.
-\begin{flalign*}
-V(2k) \cup ``c\dq  &= \frac{1}{2}\sum_{i=0}^{k}\binom{2k}{i}p^{2k-i}(1-p)^i + \frac{1}{2}\sum_{i=0}^{k-1}\binom{2k}{i}p^{2k-i}(1-p)^i\\
-&=\sum_{i=0}^{k-1}\binom{2k}{i}p^{2k-i}(1-p)^i + \frac{1}{2}\binom{2k}{k}p^{2k-i}(1-p)^i\\
-&=V(2k)\\
-&=V(2k-1)\\
-&<V(2k+1)
-\end{flalign*}
-\end{frame}
-
-
-\subsubsection{Beweisidee Proposition 2}
-\begin{frame}\frametitle{Beweisidee Proposition 2}
-\begin{enumerate}
-\item Agent 1 w\"ahlt $S$, sodass $S_{NT}=\varnothing$.
-\item [$\rightarrow$] folgt, da $V(2k-1)=V(2k)<V(2k) \cup ``NT\dq$
-\item Agent 1 w\"ahlt $S$, sodass $\vert \vert S_0 \vert - \vert S_1 \vert \vert = k \leq 1$.
-\item [$\rightarrow$] falls $k>1$, ist das Ergebnis in eine Richtung beeinflusst
-\item Mit Hilfslemma 1 folgt, dass $k=0$. Es gibt einen Agenten $i \in S_c$, der durch ein Abweichen auf ``T'' $\pi_1$ und $\pi_{2,i}$ erh\"oht.
-\item Mit Hilfslemma 1 folgt, $S_c=\varnothing$. Jeder Agent $i \in S_c$ kann durch ein Abweichen $\pi_{2,i}$ erh\"ohen, ohne $\pi_1$ zu beeinflussen.
-\item Jeder Agent $i \notin S$ spielt ``T'', da seine Srategie $\pi_1$ nicht beeinflusst, aber dadurch $\pi_{2,i}$ maximiert wird.
-\item [$\rightarrow$] Es folgt, dass $S=\{2,...,n\}$ und alle Agenten in $S$ ``T'' spielen. Agent 1 folgt der Mehrheit und im Fall eines Unentschieden, spielt er ``T''.
-\end{enumerate}
-\end{frame}
 
 
 
