@@ -490,6 +490,83 @@ Since the proof is similar to the proofs of proposition 1 and 2 but lenghty I re
 \end{frame}
 
 
+
+\subsection[Example MINST]{Example MNIST}
+
+
+
+\begin{frame}
+\frametitle{Example MNIST: Setting}
+Training of a neural network to detect a handwritten digit between 0-3 next to a distractor digit from 4-9 given teh following setting:
+\begin{itemize}
+\item images of size 28 x 56 pixels
+\item $28 x 56 = 1568$ input neurons $\{x_i\}$, one hidden layer with 400 neurons $\{x_j\}$ and one output $x_k$
+\item weights are random initializated $\{w_{ij}\}$ and bias $\{b_j\}$ is initialized to zero and non negative during training
+\item Training with 300000 iterations of stochastic gradient descent with a bach size of 20
+\item 
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example MNIST: Heatmaps}
+\vspace{0.5cm}
+\begin{figure}
+\includegraphics[height=2.5cm, width=12cm]{image/example_mnist_heatmap}
+\end{figure}
+
+\begin{figure}
+\includegraphics[height=3.25cm, width=12cm]{image/example_mnist_consistent}
+\vspace{-0.75cm}
+\caption{Heatmap and Empirical Results of Consistency}
+\end{figure}
+
+
+\end{frame}
+
+
+
+\section[Application to Deep Networks]{Application to Deep Networks}
+
+
+
+
+\begin{frame}
+\frametitle{Min-Max Relevance Model}
+Trainable relevnce model designed to incorporate bottom-up and top-down information
+
+\begin{align*}
+y_i &= \max(0,\sum_ix_iv_{ij} + a_j)\\
+\hat{R}_k &= \sum_j y_j,
+\end{align*}
+where $a_j = \min(0,\sum_l R_l V_{lj} + d_j)$ is a negative bias.\\
+$\rightarrow$ Compute $\{v_{ij}, v_{lj},d_j\}$ by minimizing 
+\begin{equation*}
+\min\langle (\hat{R}_k-R_k)^2) \rangle
+\end{equation*}
+\vspace{-1cm}
+\end{frame}
+
+\subsection[Relevance Model]{Relevance Model}
+
+\begin{frame}
+\frametitle{Deep Networks}
+Many problems require very complex deep architectures
+
+\begin{figure}
+\includegraphics[height=6cm, width=11cm]{image/example_deep_network_one}
+\vspace{-0.25cm}
+\caption{Example Deep Network}
+\end{figure}
+
+\vspace{-1cm}
+\end{frame}
+
+
+
+
+
 \section[ausschlie{\ss}lich Allgemeinwohl]{Die Implementierung des PT ist unm\"oglich, wenn alle Agenten ausschlie{\ss}lich am Allgemeinwohl interessiert sind} 
 
 
