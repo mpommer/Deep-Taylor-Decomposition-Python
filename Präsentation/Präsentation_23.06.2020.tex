@@ -4,17 +4,24 @@
     \addtobeamertemplate{frametitle}{\vspace*{-0.1cm}}{\vspace*{-0.5cm}}
 
 \setbeamercolor{frametitle}{fg=black,bg=white}
-
+\setbeamertemplate{caption}[numbered]
 \usetheme{CambridgeUS}
 \usepackage{ngerman}
 \renewcommand{\figurename}{Figure}
 \renewcommand{\tablename}{Tabel}
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand\norm[1]{\left\lVert#1\right\rVert}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[backend=biber]{biblatex}
+\bibliography{literature_seminar.bib}
+
+% Removes icon in bibliography
+\setbeamertemplate{bibliography item}{}
 
 
 \begin{document}
-\title[Deep Taylor Decomposition]{Explaining NonLinear Classification Decisions with Deep Taylor Decomposition\\
-analysis}  
+\title[Deep Taylor Decomposition]{Explaining NonLinear Classification Decisions with Deep Taylor Decomposition}  
 \author{Marcel Pommer}
 \institute{LMU M\"unchen}
 \date{\today} 
@@ -25,12 +32,13 @@ analysis}
 
 \begin{frame}
 \frametitle[Explainability]{Explainability}
-\begin{center}
-\includegraphics[width=0.9\textwidth]{image/introduction_image}
-\end{center}
 \vspace{0.25cm}
-Deep neural networks have great performance on a variety of problems \\
-\textbf{but} how can we justify decisions made by complex deep architectures?\\
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{image/introduction_image}
+\end{figure}
+\vspace{0.25cm}
+Deep neural networks performe great on a variety of problems \nocite{*}\\
+\textbf{but} how can we justify decisions made by complex deep architectures?\cite{Montavon.2017b}\\
 \end{frame} 
 
 
@@ -75,7 +83,7 @@ With one major drawback $\rightarrow$ \textbf{lack of transparency}
 
 
 
-\subsection[interpretable classifier]{Interpretable Classifier}
+
 \begin{frame}
 \frametitle{Interpretable Classifier} 
 \vspace{0.5cm}
@@ -92,12 +100,12 @@ We do not only need to know if the patient has cancer but also where exactly it 
 
 
 
-\subsection[General Idea]{General Idea}
+
 
 
 \begin{frame}
 \frametitle{General Idea} 
-\vspace{0.35cm}
+\vspace{0.5cm}
 To accomplish the task of explainability we map relevance from the output to the input features
 
 \vspace{0.25cm}
@@ -105,7 +113,7 @@ To accomplish the task of explainability we map relevance from the output to the
 \begin{center}
 \begin{figure}
 \includegraphics[height=4.5cm, width=11cm]{image/fig._1_example}
-\caption{NN detecting 0 while distrected by 5}
+\caption{Neural Network Detecting 0 while Distrected by 5}
 \end{figure}
 \end{center}
 
@@ -118,24 +126,36 @@ To accomplish the task of explainability we map relevance from the output to the
 
 \subsection[Mathematical Framework and Definitions]{Mathematical Framework and Definitions}
 
+
+
 \begin{frame}
 \frametitle{Mathematical Framework}
-\vspace{0.5cm} 
+
 In the context of image classification we define the following mathematical framework
 \begin{itemize}
 \item Positive valued function $f:\mathbb{R}^d\to \mathbb{R}^+$, where the output $f(x)$ defines either the probability that the object is present or the quantity of the object in question
-\item[$\rightarrow$] $f(x)>0$ expresss the presence of the object  
-\item Input $x \in \mathbb{R}^d$, composable in a set of pixel values $x=\{x_p\}$
-\item Relevance score $R_p(x)$ indicating the relevance of each pixel
-\item[$\rightarrow$] The relevance score can be displayed in a heatmap denoted by $R(x) = \{R_P(x)\}$
+\item[$\rightarrow$] $f(x)>0$ expresses the presence of the object  
+
+
 \end{itemize}
 
-\begin{figure}
-\includegraphics[height=2cm, width=2cm]{image/heatmap_example}
-\end{figure}
+ \begin{columns}
+          \begin{column}[T]{8cm}
+          		\begin{itemize}
+          		\item Input $x \in \mathbb{R}^d$, composable in a set of pixel values $x=\{x_p\}$
+			\item Relevance score $R_p(x)$ indicating the relevance of each pixel
+			\item[$\rightarrow$] The relevance score can be displayed in a heatmap denoted by $R(x) = \{R_P(x)\}$
+			\end{itemize}
+
+            \end{column} 
+            \begin{column}[T]{3.5cm}
+			\begin{figure}
+			\includegraphics[height=2.75cm, width=2.75cm]{image/heatmap_example}
+			\end{figure}
+	\end{column}
+\end{columns} 
 
 \end{frame}
-
 
 
 
@@ -147,6 +167,8 @@ A heatmapping $R(x)$ is \underline{conservative} if the sum of assigned relevanc
 \forall x: f(x)=\sum_pR_p(x)
 \end{equation}
 \end{block}
+
+\vspace{0.5cm}
 
 \begin{block}{Definition 2}
 A heatmapping $R(x)$ is  \underline{positive} if all values forming the heatmap are greater or equal to zero, that is:
@@ -160,8 +182,8 @@ A heatmapping $R(x)$ is  \underline{positive} if all values forming the heatmap 
 
 \begin{frame}
 \frametitle{Definitions}
-Further we test all algorithms for compliance with definition 1 and 2 why we introduce the definition of consistency which forth on is a measure of correctness of a technique\\
-%\vspace{0.1cm}
+Further we test all algorithms for compliance with definition 1 and 2 hence we introduce the definition of consistency which forth on is a measure of correctness of a technique\\
+\vspace{0.1cm}
 
 
 \begin{block}{Definition 3}
@@ -172,7 +194,7 @@ A heatmapping $R(x)$ is  \underline{consistent} if it is  \textit{conservative} 
 \vspace{0.5cm}
 However consistency is not a measure of quality which can be seen easily on the following example which complies with definition 3
 \begin{equation*}
-\forall p: R_p(x) =\frac{1}{d} \dot f(x) ,
+\forall p: R_p(x) =\frac{1}{d} \cdot f(x) ,
 \end{equation*}
 where d denotes the number of pixels
 \end{frame}
@@ -200,7 +222,7 @@ The challenge of finding a root point
 			\begin{itemize}
 			\item Potentially more than one root point
 			\item Remove object but deviate as few as possible
-			\item[$\rightarrow$] $\min_{\xi} ||\xi-x||^2 \text{ subject to } f(\xi)=0$
+			\item[$\rightarrow$] $\min_{\xi} \norm{\xi-x}^2 \text{subject to } f(\xi)=0$
 			\end{itemize}
 	\end{column}
 \end{columns} 
@@ -212,18 +234,20 @@ The challenge of finding a root point
 
 \begin{frame}
 \frametitle{Sensitivity Analysis}
-Choose a root point at infinitisimally small distance from the actual point, i.e. $\xi = x- \delta \frac{\partial f}{\partial x}$\\
+\vspace{0.25cm}
+Root point at infinitisimally small distance from the actual point, i.e. $\xi = x- \delta \frac{\partial f}{\partial x}$, where $\delta$ is small\\
+\vspace{0.1cm}
 If we assume a locally constant function we get
 \begin{flalign*}
  f(x) & =f(\xi) + \left( \frac{\partial f}{\partial x}\Big|_{x=\xi}\right)^T \cdot (x- (x- \delta \frac{\partial f}{\partial x})) + 0\\
-       & = f(\xi) + \delta \left( \frac{\partial f}{\partial x}\right)^T  \frac{\partial f}{\partial x} + 0\\
+       & = f(\xi) + \delta \left( \frac{\partial f}{\partial x}\right)^T \cdot  \frac{\partial f}{\partial x} + 0\\
        & = f(\xi) + \sum_p \underbrace{ \delta \left( \frac{\partial f}{\partial x}\right)^2}_{R_p} + 0
 \end{flalign*}
 
 
 \begin{itemize}
 \item The heatmap is positive but not conservative
-\item Measure local effect
+\item The heatmap only measures a local effect
 \end{itemize}
 
 
@@ -238,12 +262,13 @@ If we assume a locally constant function we get
 \begin{figure}
 \includegraphics[height=2.75cm, width=11cm]{image/deep_taylor_decomposition_example}
  \end{figure}
+\vspace{0.25cm}
 We view each layer as a seperate function and write the Taylor decomposition of $\sum_j R_j \text{ at } \{x_i\}$ as
 \begin{align*}
     \sum_j R_j &= \left( \frac{\partial (\sum_j R_j)}{\partial \{x_i\}}\Big|_{\{\tilde{x_i}\}}\right)^T \cdot (\{x_i\}-\{\tilde{x}\}) + \epsilon\\
-    &= \sum_i \sum_j \frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}\}} \cdot (x_i-\tilde{x_i}) + \epsilon
+    &= \sum_i \underbrace{\sum_j \frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}\}} \cdot (x_i-\tilde{x_i})}_{R_i} + \epsilon
 \end{align*}
-
+\vspace{-0.25cm}
 
 \end{frame}
 
@@ -255,11 +280,11 @@ We view each layer as a seperate function and write the Taylor decomposition of 
  \end{figure}
 
 \begin{itemize}
-\item  If each local Taylor decomposition is \textit{conservative} then the chain of equalitis is also \textit{conservative} (Layer-wise relevance conservation)
+\item  If each local Taylor decomposition is \textit{conservative} then the chain of equalities is also \textit{conservative} (layer-wise relevance conservation)
 \item[$\rightarrow$] $R_f = ...= \sum_i R_i = ... = \sum_p R_p$
-\item  If each local Taylor decomposition is \textit{positive} then the chain of equalitis is also \textit{positive} 
+\item  If each local Taylor decomposition is \textit{positive} then the chain of equalities is also \textit{positive} 
 \item[$\rightarrow$] $R_f,...,\{R_i\},...,\{R_P\} \geq 0$
-\item If each local Taylor decomposition is \textit{consistent} then the chain of equalitis is also \textit{consistent} 
+\item If each local Taylor decomposition is \textit{consistent} then the chain of equalities is also \textit{consistent} 
 \end{itemize}
 
 
@@ -271,8 +296,9 @@ We view each layer as a seperate function and write the Taylor decomposition of 
 
 \begin{frame}
 \frametitle{Setting}
-\vspace{0.2cm}
+\vspace{0.5cm}
 Consider a simple detection-pooling one layer neural network with
+\vspace{-0.2cm}
  \begin{columns}
           \begin{column}[T]{5.5cm}
 		\begin{align*}
@@ -286,11 +312,12 @@ Consider a simple detection-pooling one layer neural network with
 			\end{figure}
 	\end{column}
 \end{columns} 
+\vspace{0.25cm}
 \begin{enumerate}
 \item $R_k = x_k$ and thus $R_k = \sum_j x_j$
 \item  Chose a root point and redistribute $R_k$ on neurons $x_j$\\
-$\rightarrow$ $R_j = \frac{\partial R_k}{\partial x_j}\Big|_{\{\tilde{x}_j\}} \cdot (x_j - \tilde{x}_j) $, with $\{x_j\}=0$
-\item Since $\frac{\partial R}{\partial x_j}=1$ we obtain $R_j = x_j$
+$\rightarrow$ $R_j = \frac{\partial R_k}{\partial x_j}\Big|_{\{\tilde{x}_j\}} \cdot (x_j - \tilde{x}_j) $, with $\{\tilde{x}_j\}=0$
+\item Since $\frac{\partial R_k}{\partial x_j}=1$ we obtain $R_j = x_j$
 \item Apply Taylor decomposition another time and get\\
  $R_i = \sum_j\frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i\}^{(j)}} \cdot (x_i - \tilde{x}_i^{(j)})$
 \end{enumerate}
@@ -302,18 +329,19 @@ $\rightarrow$ $R_j = \frac{\partial R_k}{\partial x_j}\Big|_{\{\tilde{x}_j\}} \c
 
 \begin{frame}
 \frametitle{Derivation of Propagation Rules}
-Given $R_j = \max(0, \sum_i x_iw_{ij} + b_j)$ and $b_j <0$ and a search direction $\{v_i\}^{(j)}$ in the input space such that
-\vspace{-0.35cm}
+\vspace{0.3cm}
+Given $R_j = \max(0, \sum_i x_iw_{ij} + b_j)$ and $b_j \leq 0$ and a search direction $\{v_i\}^{(j)}$ in the input space such that
+
 \begin{equation}
-\{\tilde{x}\}^{(j)} = \{x_i\} + t \{v_i \} ^{(j)} \Leftrightarrow t = \frac{\tilde{x_i}^{(j)} - x_i}{v_i^{(j)}}
+\tilde{x}^{(j)} = x_i + t v_i ^{(j)} \Leftrightarrow t = \frac{\tilde{x_i}^{(j)} - x_i}{v_i^{(j)}}
 \label{equ:search_direction}
 \end{equation}
-\vspace{-0.35cm}
 
+\vspace{0.2cm}
 If the data point itself is not a root point, i.e. $\sum_i x_i w_{ij} + b_j>0$ the nearest root along $\{v_i\}^{(j)}$ is given by the intersection of equation \eqref{equ:search_direction} and $\sum_i\tilde{ x_i}^{(j)} w_{ij} + b_j=0$ which can be resolved to 
-\vspace{-0.25cm}
+\vspace{-0.1cm}
 \begin{align*}
-0 &= \sum_i\{x_i\}w_{ij} + b_j + \sum_i v_i^{(j)} t \\
+0 &= \sum_i x_i w_{ij} + b_j + \sum_i v_i^{(j)} t \\
 x_i - \tilde{x_i}^{(j)} & = \frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}
 \end{align*}
 
@@ -330,13 +358,13 @@ x_i - \tilde{x_i}^{(j)} = \frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}
 To get
 \vspace{-0.2cm}
 \begin{align*}
-R_i & = \sum_j \frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i^{(j)}} \dot (x_i - \tilde{x}_i^{(j)})= \sum_j w_{ij}\frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}\\
-&= \sum_j w_{ij}\frac{v_i^{(j)} w_{ij}}{\sum_i v_i^{(j)} w_{ij}} R_j \numberthis \label{equ:relevance_model}
+R_i & = \sum_j \frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i^{(j)}} \cdot (x_i - \tilde{x}_i^{(j)})= \sum_j w_{ij}\frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}\\
+&= \sum_j\frac{v_i^{(j)} w_{ij}}{\sum_i v_i^{(j)} w_{ij}} R_j \numberthis \label{equ:relevance_model}
 \end{align*}
 
-The relevance propagation rule can now easily be calculated by defining
+The relevance propagation rule can be calculated with the following steps
 \begin{enumerate}
-	\item Define a segment with search directio $\{v_i\}^{(j)}$
+	\item Define a segment with search direction $\{v_i\}^{(j)}$
 	\item The line lies inside the input domain and contains a root point
 	\item Inject search direction in equation \eqref{equ:relevance_model}
 \end{enumerate}
@@ -350,16 +378,17 @@ The relevance propagation rule can now easily be calculated by defining
 
 \begin{frame}
 \frametitle{$w^2$-rule $\mathcal{X}=\mathbb{R}^d$}
-Choose root point which is nearest in euclidean sense\\
+Choose a root point which is nearest in the euclidean sense\\
+
 \begin{enumerate}
-	\item Search direction $\{v_i\}^{(j)} = w_{ij}$
+	\item Search direction $\{v_i\}^{(j)} = w_{ij}$ (gradient of $R_j$)
 	\item No domain restriction
 	\item Inject search direction in equation \eqref{equ:relevance_model}
 \end{enumerate}
-
+\vspace{0.25cm}
 \begin{block}{$w^2$-rule}
 \begin{equation*}
-R_i =\sum_j\frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i\}^{(j)}} \cdot (x_i - \tilde{x}_i^{(j)}) =  \sum_j\frac{w_{ij}^2}{\sum_i w_{ij}^2} R_j
+R_i =\sum_j\frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i\}^{(j)}} \cdot (x_i - \tilde{x}_i^{(j)}) =  \sum_j\frac{w_{ij}^2}{\sum_{i'} w_{i'j}^2} R_j
 \end{equation*}
 \end{block}
 
@@ -373,18 +402,18 @@ R_i =\sum_j\frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i\}^{(j)}} \cdot 
 \frametitle{$w^2$-rule $\mathcal{X}=\mathbb{R}^d$}
 \vspace{0.3cm}
 \begin{block}{Proposition 1}
-For all function $g \in G$, the deep Taylor decomposition with the $w^2$-rule is consistent.
+For all functions $g \in G$, the deep Taylor decomposition with the $w^2$-rule is consistent.
 \end{block}
 \textbf{Proof}\\
 \begin{enumerate}
 \item \textit{Conservative}
 \begin{align*}
-\sum_i R_i &= \sum_i\Big(\sum_j \frac{w_{ij}^2}{\sum_iw_{ij}^2}R_j\Big)\\
-   		&= \sum_j \frac{\sum_i w_{ij}^2}{\sum_iw_{ij}^2}R_j = \sum_j R_j = \sum_j x_j = f(x)
+\sum_i R_i &= \sum_i\Big(\sum_j \frac{w_{ij}^2}{\sum_{i'}w_{i'j}^2}R_j\Big)\\
+   		&= \sum_j \frac{\sum_i w_{ij}^2}{\sum_{i'} w_{i'j}^2}R_j = \sum_j R_j = \sum_j x_j = f(x)
 \end{align*}
 \item \textit{Positive}
 \begin{align*}
-R_i = \sum_j \frac{w_{ij}^2}{\sum_i w_{ij}^2}R_j = \sum_j \underbrace{w_{ij}^2}_{>0}  \underbrace{\frac{1}{\sum_i w_{ij}^2}}_{>0}  \underbrace{R_j}_{\geq 0} \geq 0
+R_i = \sum_j \frac{w_{ij}^2}{\sum_{i'} w_{i'j}^2}R_j = \sum_j \underbrace{w_{ij}^2}_{\geq 0}  \underbrace{\frac{1}{\sum_{i'} w_{i'j}^2}}_{>0}  \underbrace{R_j}_{\geq 0} \geq 0
 \end{align*}
 \end{enumerate}
 
@@ -428,11 +457,11 @@ R_i =  \sum_j \frac{x_i w_{ij}^+}{\sum_{i'} x_{i'} w_{i'j}^+} R_j
 \frametitle{$z^+$-rule $\mathcal{X}=\mathbb{R}^d_+$}
 \vspace{-0.4cm}
 \begin{block}{Proposition 2}
-For all function $g \in G$ and data points $\{x_i\} \in \mathbb{R}_+^d$, the deep Taylor decomposition with the $z^+$-rule is consistent.
+For all functions $g \in G$ and data points $\{x_i\} \in \mathbb{R}_+^d$, the deep Taylor decomposition with the $z^+$-rule is consistent.
 \end{block}
 \vspace{0.5cm}
 \textbf{Proof}\\
-If $\sum_i x_i w_{ij}^+ >0$ the same proof as for the $w^2$-rule applies, if $\sum_i x_i w_{ij}^+ =0$ follows that $\forall i: x_i w_{ij} \leq0$ and 
+If $\sum_i x_i w_{ij}^+ >0$ the same proof as for the $w^2$-rule applies, if $\sum_i x_i w_{ij}^+ =0$ it follows that $\forall i: x_i w_{ij} \leq0$ and 
 
 \begin{align*}
  R_j = x_j = 0
@@ -455,7 +484,7 @@ and there is no relevance to redistribute to the lower layers.
 \vspace{0.4cm}
 Often we have a bounded input space $\mathcal{B} = \{\{x_i\} : \forall_{i=1}^d l_i\leq x_i \leq h_i\} $ and a segment $(\{l_i 1_{w_{ij}>0} + h_i 1_{w_{ij}<0}\},\{x_i\})\subset \mathcal{B}$\\
 \begin{enumerate}
-	\item Search direction $\{v_i\}^{(j)} = x_i - x_i 1_{w_{ij}<0} = x_i 1_{w_{ij}\geq0}$
+	\item Search direction $\{v_i\}^{(j)} = x_i - l_i 1_{w_{ij}>0} - h_i 1_{w_{ij}<0}$
 	\item If $\{x_i\} \in \mathcal{B}$ so is the whole domain, further for $w_{ij}^-=\min(0,w_{ij})$ and $w_{ij}^+=\max(0,w_{ij})$
 	\vspace{-0.25cm}
 	\begin{align*}
@@ -472,7 +501,6 @@ Often we have a bounded input space $\mathcal{B} = \{\{x_i\} : \forall_{i=1}^d l
 R_i =  \sum_j \frac{x_i w_{ij} - l_i w_{ij}^+ - h_i w_{ij}^-}{\sum_{i'} x_{i'} w_{i'j}  - l_i w_{i'j}^+ - h_i w_{i'j}^-} R_j
 \end{equation*}
 \end{block}
-
 \end{frame}
 
 
@@ -497,15 +525,18 @@ Since the proof is similar to the proofs of proposition 1 and 2 but lenghty I re
 
 \begin{frame}
 \frametitle{Example MNIST: Setting}
-Training of a neural network to detect a handwritten digit between 0-3 next to a distractor digit from 4-9 given teh following setting:
+\vspace{0.5cm}
+Training of a neural network to detect a handwritten digit between 0-3 next to a distractor digit from 4-9 given the following setting:
 \begin{itemize}
 \item images of size 28 x 56 pixels
-\item $28 x 56 = 1568$ input neurons $\{x_i\}$, one hidden layer with 400 neurons $\{x_j\}$ and one output $x_k$
-\item weights are random initializated $\{w_{ij}\}$ and bias $\{b_j\}$ is initialized to zero and non negative during training
-\item Training with 300000 iterations of stochastic gradient descent with a bach size of 20
-\item 
+\item 28 x 56 = 1568 input neurons $\{x_i\}$, one hidden layer with 400 neurons $\{x_j\}$ and one output $x_k$
+\item weights are random initialized $\{w_{ij}\}$ and bias $\{b_j\}$ is initialized to zero and non negative during training
+\item Training with 300000 iterations of stochastic gradient descent with a batch size of 20 
 \end{itemize}
+\begin{figure}
+\includegraphics[height=2.5cm, width=8cm]{image/fig._1_example}
 
+\end{figure}
 \end{frame}
 
 
@@ -530,103 +561,161 @@ Training of a neural network to detect a handwritten digit between 0-3 next to a
 \section[Application to Deep Networks]{Application to Deep Networks}
 
 
-
-
-\begin{frame}
-\frametitle{Min-Max Relevance Model}
-Trainable relevnce model designed to incorporate bottom-up and top-down information
-
-\begin{align*}
-y_i &= \max(0,\sum_ix_iv_{ij} + a_j)\\
-\hat{R}_k &= \sum_j y_j,
-\end{align*}
-where $a_j = \min(0,\sum_l R_l V_{lj} + d_j)$ is a negative bias.\\
-$\rightarrow$ Compute $\{v_{ij}, v_{lj},d_j\}$ by minimizing 
-\begin{equation*}
-\min\langle (\hat{R}_k-R_k)^2) \rangle
-\end{equation*}
-\vspace{-1cm}
-\end{frame}
-
-\subsection[Relevance Model]{Relevance Model}
-
 \begin{frame}
 \frametitle{Deep Networks}
 Many problems require very complex deep architectures
 
 \begin{figure}
+\label{fig1}
 \includegraphics[height=6cm, width=11cm]{image/example_deep_network_one}
 \vspace{-0.25cm}
 \caption{Example Deep Network}
+
 \end{figure}
 
 \vspace{-1cm}
 \end{frame}
 
 
-
-
-
-\section[ausschlie{\ss}lich Allgemeinwohl]{Die Implementierung des PT ist unm\"oglich, wenn alle Agenten ausschlie{\ss}lich am Allgemeinwohl interessiert sind} 
-
-
-
-
-
-
-
-
-
-
-
-
-\section[alternatives privates Motiv]{Diskussion: Ein Vorschlag zur Umformulierung des privaten Motivs}
-
-\subsection{Ein alternatives privates Motiv}
-\begin{frame}\frametitle{Ein alternatives privates Motiv}
-\vspace{-1.2cm}
-\textbf{Das alternative private Motiv:} Jeder Agent ist neben dem Allgemeinwohl daran interessiert, dass sich seine Empfehlung ex post als richtig erweist.
-\vspace{0.4cm}
-\begin{block}{Behauptung}
-Der in Kapitel drei definierte Mechanismus implementiert das PT f\"ur jedes Profil von Pr\"aferenzen, das strikt wachsend im PT und dem oben definierten privaten Motiv ist.
+\begin{frame}
+\frametitle{Relevance Model}
+\vspace{0.25cm}
+In deep architectures as in figure 3 a mapping between two layers may be unknown, even if it exists
+\begin{block}{Definition 1}
+A relevance model is a function that maps a set of neuron activations at a given layer to the relevance of a neuron in a higher layer, and whose output can be redistributed onto its input variables.
 \end{block}
 
-
+\begin{figure}
+\label{fig1}
+\includegraphics[height=4cm, width=7.75cm]{image/example_deep_network_one}
+\end{figure}
+\vspace{-0.5cm}
 \end{frame}
 
 
-
-
-
-\begin{frame}\frametitle{Beweis}
-\vspace{0.4cm}
-Der Beweis erfolgt weitestgehend analog zum Beweis von Proposition 2. Im Folgenden die Unterschiede:
-\begin{itemize}
-\item Es gilt $\pi_1 \geq V(1)$, aber $\pi_{2,1}<1$. Trotzdem steht das private Motiv von Agent 1 dem \"offentlichen nicht entgegen.
-\item [$\rightarrow$] Agent 1 maximiert $\pi_{2,1}<1$, indem er $\pi_1$ maximiert, damit w\"ahlt er $S$ so informativ wie m\"oglich.
-\item Analog zum Beweis von Proposition 2 folgt damit $S_{NT}=\varnothing$.
-\item Mit Hilfslemma 1 folgt ebenfalls, dass $S_c=\varnothing$, da ein Agent durch einen Wechsel von der Strategie ``c'', zur Strategie ``T'', $\pi_{2,i}$ von $\frac{1}{2}$ auf $p$ erh\"oht.
-\item Da alle Agenten $i\notin S$ ausschlie{\ss}lich daran interessiert sind, dass sich ihre Empfehlung ex post als richtig erweist, spielen sie ``T''.
-\item [$\rightarrow$] Damit folgt, dass Agent 1 $S=N\setminus \{1\}$ w\"ahlt und alle Agenten in $S$ spielen ``T''. Agent 1 folgt der Mehrheit und im Fall eines Unentschieden folgt er seinem eigenen Signal.
-\end{itemize}
-\end{frame}
-
-
-
-
-
-
-
-
-
-\section{Literatur}
 \begin{frame}
-\frametitle{Literatur}
-\footnotesize{
-\begin{thebibliography}{99}
-\bibitem[wik]{p1} [GR98] Jacob Glazer and Ariel Rubinstein. Motives and implementation: On the design of mechanism to elicit opinions. Journal of economic Theory, 79(2):157-173, 1998.
-\end{thebibliography}
-}
+\frametitle{Min-Max Relevance Model}
+\vspace{0.4cm}
+Trainable relevance model designed to incorporate bottom-up and top-down information
+\begin{align*}
+y_i &= \max(0,\sum_ix_iv_{ij} + a_j)\\
+\hat{R}_k &= \sum_j y_j,
+\end{align*}
+where $a_j = \min(0,\sum_l R_l v_{lj} + d_j)$ is a negative bias
+\vspace{-0.25cm}
+
+
+ \begin{columns}
+          \begin{column}{5cm}
+          		$\rightarrow$ Compute $\{v_{ij}, v_{lj},d_j\}$ by minimizing 
+			\begin{equation*}
+			\min\langle (\hat{R}_k-R_k)^2) \rangle
+			\end{equation*}
+            \end{column} 
+            \begin{column}{6cm}
+			\begin{figure}
+			\label{fig1}
+			\includegraphics[height=3cm, width=6.5cm]{image/min_max_relevance_model}
+			\end{figure}
+	\end{column}
+\end{columns} 
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Min-Max Relevance Model}
+Due to the similar structure we can apply the propagation rules for the one-layer neural network
+\begin{itemize}
+\item Pooling layer
+\begin{equation*}
+R_j = y_j
+\end{equation*}
+
+\item Detection layer
+\begin{equation*}
+R_i = \sum_j \frac{q_{ij}}{\sum_{i'} q_{i'j}} R_j
+\end{equation*}
+where $q_{ij}= v_{ij}^2$, $q_{ij}= x_i v_{ij}^+$ or $q_{ij}= x_i v_{ij} - l_i v_{ij}^+ - h_i v_{ij}^-$ for the $w^2$-rule, $z^+$-rule and the $z^b$- rule respectively
+\end{itemize}
+\vspace{0.5cm}
+
+$\rightarrow$ The Min-Max relevance model is due to the minimization only approximately consistent
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Training-Free Relevance Model}
+Consider the original network structure
+\begin{align*}
+x_j &= \max(0,\sum_ix_i w_{ij} + b_j)\\
+x_k &= \norm{\{x_j\}}_p
+\end{align*}
+If the upper layer was explained by the $z^+$-rule, relevance $R_k$ can be written as
+
+
+ \begin{columns}
+          \begin{column}{5cm}
+			\begin{align*}
+			R_k &= \sum_l \frac{x_k w_{kl}^+}{\sum_{k'} x_{k'} w_{k'l}^+} R_l\\
+			R_k &= (\sum_j x_j) \cdot \frac{\norm{\{x_j\}}_p}{\norm{\{x_j\}}_1}   \sum_l \frac{w_{kl}^+R_l}{\sum_{k'} x_{k'} w_{k'l}^+} 
+			\end{align*}
+            \end{column} 
+            \begin{column}{5cm}
+			\begin{figure}
+			\label{fig1}
+			\includegraphics[height=3cm, width=4cm]{image/training-free_relevance_model_3}
+			\end{figure}
+	\end{column}
+\end{columns} 
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Training-Free Relevance Model}
+\vspace{0.25cm}
+As before we can apply the propagation rules for the one-layer neural network
+\begin{itemize}
+\item Pooling layer
+\begin{equation*}
+R_j = \frac{x_j}{\sum_{j'} x_{j'}}R_k
+\end{equation*}
+
+\item Detection layer
+\begin{equation*}
+R_i = \sum_j \frac{q_{ij}}{\sum_{i'} q_{i'j}} R_j
+\end{equation*}
+where $q_{ij}= v_{ij}^2$, $q_{ij}= x_i v_{ij}^+$ or $q_{ij}= x_i v_{ij} - l_i v_{ij}^+ - h_i v_{ij}^-$ for the $w^2$-rule, $z^+$-rule and the $z^b$- rule respectively
+\end{itemize}
+\vspace{0.1cm}
+$\rightarrow$ The training-free relevance model is consistent\\
+
+\vspace{0.5cm}
+When using the training-free model for the whole network all but the first layer need to be decomposed using the $z^+$-rule
+\end{frame}
+
+
+\section{Python Programming Example}
+
+\begin{frame}
+\frametitle{Relevance Distribution on the Titanic Dataset}
+\vspace{0.5cm}
+\begin{figure}
+\includegraphics[height=5cm, width=11cm]{image/kaggle_titanic_challenge}
+\end{figure}
+\vspace{0.25cm}
+\url{https://github.com/mpommer/Deep-Taylor-Decomposition-Python}
+\end{frame}
+
+
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+% This prints the bibliography on the slide
+\printbibliography
 \end{frame}
 
 

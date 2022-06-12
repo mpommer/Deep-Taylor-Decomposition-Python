@@ -14,6 +14,27 @@ tf.random.set_seed(seed)
 import numpy as np
 np.random.seed(seed)
 
+
+class NonNeg(tf.keras.constraints.Constraint):
+  """Constrains weight tensors to be centered around `ref_value`."""
+
+  def __init__(self):
+      pass
+  def __call__(self, w):
+      
+     w = tf.cast(w < 0, w.dtype) * w
+     return w
+ 
+    
+    # if w[0]<0:
+    #     return w
+    # else:
+    #     return 0
+
+  def get_config(self):
+    return {'ref_value': self.ref_value}
+
+
 class NN:
     
     def __init__(self, x_train, y_train):
@@ -24,7 +45,7 @@ class NN:
 
         model = keras.Sequential()
         for l in range(layers):
-            model.add(Dense(neurons[l], input_dim=self.x_train.shape[1], activation = "ReLU"))
+            model.add(Dense(neurons[l], input_dim=self.x_train.shape[1], activation = "ReLU", bias_constraint=NonNeg()))
             
         model.add(Dense(1, activation='sigmoid', name='output'))
 
@@ -60,4 +81,7 @@ class NN:
         test = [1 if x ==y else 0 for (x,y) in zip(test_result,y_test.iloc[:,1])]
         
         return print(sum(test)/len(test))
+
+
+
 

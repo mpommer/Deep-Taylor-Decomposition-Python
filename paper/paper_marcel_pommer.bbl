@@ -1,10 +1,34 @@
 \begin{thebibliography}{1}
 
-\bibitem{Montavon.2017}
+\bibitem{Eaton.1998}
+{\sc J.~P. Eaton, C.~A. Haas, and J.~Maxtone-Graham}, {\em Titanic: Triumph and
+  tragedy}, {Patrick Stephens}, Nr. Yeovil, Somerset, 2nd ed.~ed., 1998.
+
+\bibitem{lecun2010mnist}
+{\sc Y.~LeCun, C.~Cortes, and C.~Burges}, {\em Mnist handwritten digit
+  database}, ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist, 2
+  (2010).
+
+\bibitem{MaximilianAlber.2019b}
+{\sc {Maximilian Alber}, {Sebastian Lapuschkin}, {Philipp Seegerer}, {Miriam
+  H{\"a}gele}, {Kristof T. Sch{\"u}tt}, {Gr{\'e}goire Montavon}, {Wojciech
+  Samek}, {Klaus-Robert M{\"u}ller}, {Sven D{\"a}hne}, and {Pieter-Jan
+  Kindermans}}, {\em innvestigate neural networks!}, Journal of Machine
+  Learning Research, 20 (2019), pp.~1--8,
+  \url{http://jmlr.org/papers/v20/18-540.html}.
+
+\bibitem{Montavon.2017b}
 {\sc G.~Montavon, S.~Bach, A.~Binder, W.~Samek, and K.-R. M{\"u}ller}, {\em
   Explaining nonlinear classification decisions with deep taylor
   decomposition}, Pattern Recognition, 65 (2017), pp.~211--222,
   \url{https://doi.org/10.1016/j.patcog.2016.11.008},
   \url{http://arxiv.org/pdf/1512.02479v1}.
+
+\bibitem{Russakovsky.2015}
+{\sc O.~Russakovsky, J.~Deng, H.~Su, J.~Krause, S.~Satheesh, S.~Ma, Z.~Huang,
+  A.~Karpathy, A.~Khosla, M.~Bernstein, A.~C. Berg, and L.~Fei-Fei}, {\em
+  Imagenet large scale visual recognition challenge}, International Journal of
+  Computer Vision, 115 (2015), pp.~211--252,
+  \url{https://doi.org/10.1007/s11263-015-0816-y}.
 
 \end{thebibliography}

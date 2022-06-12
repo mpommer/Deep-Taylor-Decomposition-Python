@@ -1,0 +1,303 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{Eaton.1998}{book}{}
+      \name{author}{3}{}{%
+        {{hash=3e3ec36b948b9659b38b3b5e7cf161af}{%
+           family={Eaton},
+           familyi={E\bibinitperiod},
+           given={John\bibnamedelima P.},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=3705d14933d889b13f17603cd8d6a1dd}{%
+           family={Haas},
+           familyi={H\bibinitperiod},
+           given={Charles\bibnamedelima A.},
+           giveni={C\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=ee3437a8b1e88836a3b4d8a01aa0a16d}{%
+           family={Maxtone-Graham},
+           familyi={M\bibinithyphendelim G\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Nr. Yeovil, Somerset}%
+      }
+      \list{publisher}{1}{%
+        {Patrick Stephens}%
+      }
+      \strng{namehash}{5dfbf9c94d6021b636f9c495bc67e792}
+      \strng{fullhash}{5dfbf9c94d6021b636f9c495bc67e792}
+      \strng{bibnamehash}{5dfbf9c94d6021b636f9c495bc67e792}
+      \strng{authorbibnamehash}{5dfbf9c94d6021b636f9c495bc67e792}
+      \strng{authornamehash}{5dfbf9c94d6021b636f9c495bc67e792}
+      \strng{authorfullhash}{5dfbf9c94d6021b636f9c495bc67e792}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{{"}The glamorous yet tragic story of the Titanic, her sinking with the loss of more than 1,500 lives, and the mysterious aftermath, still holds endless fascination over 80 years later. This comprehensive chronicle of the entire saga, much lauded by the experts whenit was first published, has been revised and expanded and now brings the strory right up to date.{"}--Back cover.}
+      \field{edition}{2nd ed.}
+      \field{isbn}{185260493X}
+      \field{title}{Titanic: Triumph and tragedy}
+      \field{year}{1998}
+      \true{nocite}
+    \endentry
+    \entry{lecun2010mnist}{article}{}
+      \name{author}{3}{}{%
+        {{hash=6a1aa6b7eab12b931ca7c7e3f927231d}{%
+           family={LeCun},
+           familyi={L\bibinitperiod},
+           given={Yann},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=17acda211a651e90e228f1776ee07818}{%
+           family={Cortes},
+           familyi={C\bibinitperiod},
+           given={Corinna},
+           giveni={C\bibinitperiod}}}%
+        {{hash=270087258d6a002033f05032fbdf6fad}{%
+           family={Burges},
+           familyi={B\bibinitperiod},
+           given={CJ},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{b2aa156a476841eb9aa413b99e0bd259}
+      \strng{fullhash}{b2aa156a476841eb9aa413b99e0bd259}
+      \strng{bibnamehash}{b2aa156a476841eb9aa413b99e0bd259}
+      \strng{authorbibnamehash}{b2aa156a476841eb9aa413b99e0bd259}
+      \strng{authornamehash}{b2aa156a476841eb9aa413b99e0bd259}
+      \strng{authorfullhash}{b2aa156a476841eb9aa413b99e0bd259}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist}
+      \field{title}{MNIST handwritten digit database}
+      \field{volume}{2}
+      \field{year}{2010}
+      \true{nocite}
+    \endentry
+    \entry{MaximilianAlber.2019b}{article}{}
+      \name{author}{10}{}{%
+        {{hash=782c03e5d96a63616152145be6322de6}{%
+           family={{Maximilian Alber}},
+           familyi={M\bibinitperiod}}}%
+        {{hash=efd1f508b06276cde5256235baf920be}{%
+           family={{Sebastian Lapuschkin}},
+           familyi={S\bibinitperiod}}}%
+        {{hash=e4f655dcb9e7b2b96efce635f0ad5771}{%
+           family={{Philipp Seegerer}},
+           familyi={P\bibinitperiod}}}%
+        {{hash=96d2efca9c90885a2aee0494fc77c051}{%
+           family={{Miriam Hägele}},
+           familyi={M\bibinitperiod}}}%
+        {{hash=589075f26829a436ae6e3f9b8d592451}{%
+           family={{Kristof T. Schütt}},
+           familyi={K\bibinitperiod}}}%
+        {{hash=703553e7c699d1649c9bf5572e8b5649}{%
+           family={{Grégoire Montavon}},
+           familyi={G\bibinitperiod}}}%
+        {{hash=53e5cb787cf0cbae2d24225ebd2699b1}{%
+           family={{Wojciech Samek}},
+           familyi={W\bibinitperiod}}}%
+        {{hash=6336ccab755a36bde24faaccbbb73855}{%
+           family={{Klaus-Robert Müller}},
+           familyi={K\bibinitperiod}}}%
+        {{hash=51b1dab3429210d009fb314798a5cbc7}{%
+           family={{Sven Dähne}},
+           familyi={S\bibinitperiod}}}%
+        {{hash=bfac930a6fcd12faa46ea6a8f9390029}{%
+           family={{Pieter-Jan Kindermans}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{340eff6c6d80e1365bf06486cbdaf638}
+      \strng{fullhash}{c71a94a55da4b12360ef7f952b0b1581}
+      \strng{bibnamehash}{340eff6c6d80e1365bf06486cbdaf638}
+      \strng{authorbibnamehash}{340eff6c6d80e1365bf06486cbdaf638}
+      \strng{authornamehash}{340eff6c6d80e1365bf06486cbdaf638}
+      \strng{authorfullhash}{c71a94a55da4b12360ef7f952b0b1581}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Machine Learning Research}
+      \field{number}{93}
+      \field{title}{iNNvestigate Neural Networks!}
+      \field{volume}{20}
+      \field{year}{2019}
+      \true{nocite}
+      \field{pages}{1\bibrangedash 8}
+      \range{pages}{8}
+      \verb{urlraw}
+      \verb http://jmlr.org/papers/v20/18-540.html
+      \endverb
+      \verb{url}
+      \verb http://jmlr.org/papers/v20/18-540.html
+      \endverb
+    \endentry
+    \entry{Montavon.2017b}{article}{}
+      \name{author}{5}{}{%
+        {{hash=e0889b25b37f68a2d73747dc5dfcb8a0}{%
+           family={Montavon},
+           familyi={M\bibinitperiod},
+           given={Grégoire},
+           giveni={G\bibinitperiod}}}%
+        {{hash=8295a9e73c42cad599c45a2cec0c6d27}{%
+           family={Bach},
+           familyi={B\bibinitperiod},
+           given={Sebastian},
+           giveni={S\bibinitperiod}}}%
+        {{hash=d122a2a87d21da4007f460564975e967}{%
+           family={Binder},
+           familyi={B\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod}}}%
+        {{hash=7f49b6382ab4ca917a2aa2249f875f79}{%
+           family={Samek},
+           familyi={S\bibinitperiod},
+           given={Wojciech},
+           giveni={W\bibinitperiod}}}%
+        {{hash=9f1b6144a45b1967e989e74552e37ada}{%
+           family={Müller},
+           familyi={M\bibinitperiod},
+           given={Klaus-Robert},
+           giveni={K\bibinithyphendelim R\bibinitperiod}}}%
+      }
+      \strng{namehash}{0e9835294203df396bc6021a5d0308c5}
+      \strng{fullhash}{830c8c8f12bf23a82d9d423d2c6fa731}
+      \strng{bibnamehash}{0e9835294203df396bc6021a5d0308c5}
+      \strng{authorbibnamehash}{0e9835294203df396bc6021a5d0308c5}
+      \strng{authornamehash}{0e9835294203df396bc6021a5d0308c5}
+      \strng{authorfullhash}{830c8c8f12bf23a82d9d423d2c6fa731}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Nonlinear methods such as Deep Neural Networks (DNNs) are the gold standard for various challenging machine learning problems, e.g., image classification, natural language processing or human action recognition. Although these methods perform impressively well, they have a significant disadvantage, the lack of transparency, limiting the interpretability of the solution and thus the scope of application in practice. Especially DNNs act as black boxes due to their multilayer nonlinear structure. In this paper we introduce a novel methodology for interpreting generic multilayer neural networks by decomposing the network classification decision into contributions of its input elements. Although our focus is on image classification, the method is applicable to a broad set of input data, learning tasks and network architectures. Our method is based on deep Taylor decomposition and efficiently utilizes the structure of the network by backpropagating the explanations from the output to the input layer. We evaluate the proposed method empirically on the MNIST and ILSVRC data sets.}
+      \field{issn}{00313203}
+      \field{journaltitle}{Pattern Recognition}
+      \field{number}{2}
+      \field{title}{Explaining NonLinear Classification Decisions with Deep Taylor Decomposition}
+      \field{volume}{65}
+      \field{year}{2017}
+      \true{nocite}
+      \field{pages}{211\bibrangedash 222}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1016/j.patcog.2016.11.008
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/pdf/1512.02479v1
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/pdf/1512.02479v1
+      \endverb
+      \keyw{Computer Science - Learning;Statistics - Machine Learning}
+    \endentry
+    \entry{Russakovsky.2015}{article}{}
+      \name{author}{12}{}{%
+        {{hash=2a74ec28b731b015747e2af5f0b519e1}{%
+           family={Russakovsky},
+           familyi={R\bibinitperiod},
+           given={Olga},
+           giveni={O\bibinitperiod}}}%
+        {{hash=0ae7fdc13773f928525f673b05f37149}{%
+           family={Deng},
+           familyi={D\bibinitperiod},
+           given={Jia},
+           giveni={J\bibinitperiod}}}%
+        {{hash=18c26ddba8b9dd77f278213fd4e93ce4}{%
+           family={Su},
+           familyi={S\bibinitperiod},
+           given={Hao},
+           giveni={H\bibinitperiod}}}%
+        {{hash=bdb3759bbe6ab0618874848557abd459}{%
+           family={Krause},
+           familyi={K\bibinitperiod},
+           given={Jonathan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=434c8ee62c507c93be09958bae942da5}{%
+           family={Satheesh},
+           familyi={S\bibinitperiod},
+           given={Sanjeev},
+           giveni={S\bibinitperiod}}}%
+        {{hash=e3f8564120f7528479a3ea1b507bd705}{%
+           family={Ma},
+           familyi={M\bibinitperiod},
+           given={Sean},
+           giveni={S\bibinitperiod}}}%
+        {{hash=6e8d947dd72de23b8500095b595e1e99}{%
+           family={Huang},
+           familyi={H\bibinitperiod},
+           given={Zhiheng},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=e91a4c2044bccdbef249eabc886ff988}{%
+           family={Karpathy},
+           familyi={K\bibinitperiod},
+           given={Andrej},
+           giveni={A\bibinitperiod}}}%
+        {{hash=c8d6add84efe17681e0d4968ebf47fdc}{%
+           family={Khosla},
+           familyi={K\bibinitperiod},
+           given={Aditya},
+           giveni={A\bibinitperiod}}}%
+        {{hash=9c5821708eb9cc9bc6c92c66ada53892}{%
+           family={Bernstein},
+           familyi={B\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=963e9b2526a7150c418b4e9e9d19a82f}{%
+           family={Berg},
+           familyi={B\bibinitperiod},
+           given={Alexander\bibnamedelima C.},
+           giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=cd00ce5bc45f687c432e52e0fa1a7aa6}{%
+           family={Fei-Fei},
+           familyi={F\bibinithyphendelim F\bibinitperiod},
+           given={Li},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{8ba3ccfdb2fef3e42589e7ae3b2c964a}
+      \strng{fullhash}{59755200ef94ffc1362c28c17d315fe0}
+      \strng{bibnamehash}{8ba3ccfdb2fef3e42589e7ae3b2c964a}
+      \strng{authorbibnamehash}{8ba3ccfdb2fef3e42589e7ae3b2c964a}
+      \strng{authornamehash}{8ba3ccfdb2fef3e42589e7ae3b2c964a}
+      \strng{authorfullhash}{59755200ef94ffc1362c28c17d315fe0}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0920-5691}
+      \field{journaltitle}{International Journal of Computer Vision}
+      \field{number}{3}
+      \field{title}{ImageNet Large Scale Visual Recognition Challenge}
+      \field{volume}{115}
+      \field{year}{2015}
+      \true{nocite}
+      \field{pages}{211\bibrangedash 252}
+      \range{pages}{42}
+      \verb{doi}
+      \verb 10.1007/s11263-015-0816-y
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

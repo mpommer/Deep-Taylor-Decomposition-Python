@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Created on Sat Jun 11 17:49:28 2022
+
+@author: marce
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Sat May  7 13:10:48 2022
 
 @author: Marcel Pommer
@@ -9,7 +16,7 @@ import numpy as np
 from PythonFiles.explainability_abstract_class import explainability
 from tensorflow.keras import backend as K
 
-class z_rule(explainability):
+class z_plusrule(explainability):
     
     def __init__(self, model, result, input_vector):
         self.model = model
@@ -51,6 +58,7 @@ class z_rule(explainability):
     
     def z_Rule(self, R_j, weights,layer_output):
         
+        weights[weights<0] = 0
         z =  np.matmul(weights.T,layer_output)
         
         weights_times_relevenace_div_z = np.matmul(weights,R_j/z)

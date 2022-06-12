@@ -56,4 +56,27 @@
 \@writefile{thm}{\contentsline {proposition}{{Proposition}{3.2}{z-Rule consistency}}{4}{theorem.16}\protected@file@percent }
 \newlabel{prop:zconsistency}{{3.2}{4}{Constrained Input Space and the z-Rules}{theorem.16}{}}
 \newlabel{prop:zconsistency@cref}{{[proposition][2][3]3.2}{[1][4][]4}}
-\newlabel{sec:deepNeuralNetworks}{{3.3}{4}{Deep Ne
+\newlabel{sec:deepNeuralNetworks}{{3.3}{4}{Deep Neural Networks}{subsection.17}{}}
+\newlabel{sec:deepNeuralNetworks@cref}{{[subsection][3][3]3.3}{[1][4][]4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Deep Neural Networks}{4}{subsection.17}\protected@file@percent }
+\newlabel{min:relevanceModel}{{3.3}{4}{Deep Neural Networks}{equation.18}{}}
+\newlabel{min:relevanceModel@cref}{{[equation][3][3]3.3}{[1][4][]4}}
+\bibstyle{siamplain}
+\bibdata{literature_seminar}
+\bibcite{Montavon.2017}{1}
+\newlabel{sec:exp}{{4}{5}{Experiment}{section.19}{}}
+\newlabel{sec:exp@cref}{{[section][4][]4}{[1][4][]5}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experiment}{5}{section.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}MNIST Example}{5}{subsection.20}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example: Detecting 0 with distrecting other numbers present. Comparison of different methods.}}{5}{figure.21}\protected@file@percent }
+\newlabel{fig.3}{{3}{5}{Example: Detecting 0 with distrecting other numbers present. Comparison of different methods}{figure.21}{}}
+\newlabel{fig.3@cref}{{[figure][3][]3}{[1][5][]5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Titanic Example}{5}{subsection.23}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Relevance of titanic input features}}{5}{table.25}\protected@file@percent }
+\newlabel{table_1}{{1}{5}{Relevance of titanic input features}{table.25}{}}
+\newlabel{table_1@cref}{{[table][1][]1}{[1][5][]5}}
+\newlabel{sec:conclusions}{{5}{5}{Conclusion}{section.27}{}}
+\newlabel{sec:conclusions@cref}{{[section][5][]5}{[1][5][]5}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{5}{section.27}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{5}{section.27}\protected@file@percent }
+\gdef \@abspage@last{5}
