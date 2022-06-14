@@ -22,5 +22,4 @@
 data/
 *.csv
 paper/ml_paper.pdf
-paper/*.tex
 .bak
