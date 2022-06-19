@@ -21,9 +21,9 @@
 
 
 \begin{document}
-\title[Deep Taylor Decomposition]{Explaining NonLinear Classification Decisions with Deep Taylor Decomposition}  
+\title[Deep Taylor Decomposition]{Explaining NonLinear Classification Decisions with Deep Taylor Decomposition by Montavon et al.}  
 \author{Marcel Pommer}
-\institute{LMU M\"unchen}
+\institute[LMU M\"unchen]{Ludwig-Maximilians-Universität M\"unchen}
 \date{\today} 
 
 \begin{frame}
@@ -37,8 +37,8 @@
 \includegraphics[width=0.9\textwidth]{image/introduction_image}
 \end{figure}
 \vspace{0.25cm}
-Deep neural networks performe great on a variety of problems \nocite{*}\\
-\textbf{but} how can we justify decisions made by complex deep architectures?\cite{Montavon.2017b}\\
+Deep neural networks perform great on a variety of problems \nocite{*}\\
+\textbf{but} how can we justify decisions made by complex deep architectures?\\
 \end{frame} 
 
 
@@ -82,12 +82,12 @@ With one major drawback $\rightarrow$ \textbf{lack of transparency}
 \end{frame}
 
 
-
+\iffalse
 
 \begin{frame}
 \frametitle{Interpretable Classifier} 
 \vspace{0.5cm}
-Explanation of non-linear classification in terms of the inputs\\
+Explanation of non-linear classifiers\\
 $\rightarrow$ A classifier should not only provide a result but also a reasoning
 
 \begin{center}
@@ -98,7 +98,7 @@ We do not only need to know if the patient has cancer but also where exactly it 
 
 \end{frame}
 
-
+\fi
 
 
 
@@ -113,7 +113,7 @@ To accomplish the task of explainability we map relevance from the output to the
 \begin{center}
 \begin{figure}
 \includegraphics[height=4.5cm, width=11cm]{image/fig._1_example}
-\caption{Neural Network Detecting 0 while Distrected by 5}
+\caption{Neural Network Detecting 0 while Distracted by 5}
 \end{figure}
 \end{center}
 
@@ -142,9 +142,9 @@ In the context of image classification we define the following mathematical fram
  \begin{columns}
           \begin{column}[T]{8cm}
           		\begin{itemize}
-          		\item Input $x \in \mathbb{R}^d$, composable in a set of pixel values $x=\{x_p\}$
+          		\item Input $x \in \mathbb{R}^d$, decomposable in a set of pixel values $x=\{x_p\}$
 			\item Relevance score $R_p(x)$ indicating the relevance of each pixel
-			\item[$\rightarrow$] The relevance score can be displayed in a heatmap denoted by $R(x) = \{R_P(x)\}$
+			\item[$\rightarrow$] The relevance score can be displayed in a heatmap denoted by $R(x) = \{R_p(x)\}$
 			\end{itemize}
 
             \end{column} 
@@ -164,12 +164,12 @@ In the context of image classification we define the following mathematical fram
 \begin{block}{Definition 1}
 A heatmapping $R(x)$ is \underline{conservative} if the sum of assigned relevances in the pixel space corresponds to the total relevance detected by the model, that is
 \begin{equation}
-\forall x: f(x)=\sum_pR_p(x)
+\forall x: f(x)=\sum_p R_p(x)
 \end{equation}
 \end{block}
 
 \vspace{0.5cm}
-
+\pause
 \begin{block}{Definition 2}
 A heatmapping $R(x)$ is  \underline{positive} if all values forming the heatmap are greater or equal to zero, that is:
 \begin{equation}
@@ -182,7 +182,7 @@ A heatmapping $R(x)$ is  \underline{positive} if all values forming the heatmap 
 
 \begin{frame}
 \frametitle{Definitions}
-Further we test all algorithms for compliance with definition 1 and 2 hence we introduce the definition of consistency which forth on is a measure of correctness of a technique\\
+All algorithms are shall comply with definition 1 and 2\\
 \vspace{0.1cm}
 
 
@@ -192,7 +192,9 @@ A heatmapping $R(x)$ is  \underline{consistent} if it is  \textit{conservative} 
 
 
 \vspace{0.5cm}
-However consistency is not a measure of quality which can be seen easily on the following example which complies with definition 3
+
+\pause
+But consistency is not a measure of quality which can be seen on the following example which complies with definition 3
 \begin{equation*}
 \forall p: R_p(x) =\frac{1}{d} \cdot f(x) ,
 \end{equation*}
@@ -206,11 +208,13 @@ where d denotes the number of pixels
 \begin{frame}
 \frametitle{Taylor Expansion}
 \vspace{0.35cm}
-First order taylor expansion at root point $\tilde{x}$
+First order Taylor expansion at root point $\tilde{x}$
 \begin{flalign*}
  f(x) & =f(\tilde{x}) + \left( \frac{\partial f}{\partial x}\Big|_{x=\tilde{x}}\right)^T \cdot (x-\tilde{x}) + \epsilon\\
-       & = 0 + \sum_p \underbrace{\frac{\partial f}{\partial x_p}\Big|_{x=\tilde{x}} \cdot (x_p-\tilde{x_p})}_{R_p(x)} + \epsilon  
+       & = 0 + \sum_p \underbrace{\frac{\partial f}{\partial x_p}\Big|_{x=\tilde{x}} \cdot (x_p-\tilde{x}_p)}_{R_p(x)} +\  \epsilon  
 \end{flalign*}
+
+\pause
 The challenge of finding a root point
  \begin{columns}
           \begin{column}[T]{5.5cm}
@@ -235,16 +239,17 @@ The challenge of finding a root point
 \begin{frame}
 \frametitle{Sensitivity Analysis}
 \vspace{0.25cm}
-Root point at infinitisimally small distance from the actual point, i.e. $\xi = x- \delta \frac{\partial f}{\partial x}$, where $\delta$ is small\\
+Root point at infinitesimally small distance from the actual point, i.e. $\xi = x- \delta \frac{\partial f}{\partial x}$, where $\delta$ is small\\
+\pause
 \vspace{0.1cm}
 If we assume a locally constant function we get
 \begin{flalign*}
  f(x) & =f(\xi) + \left( \frac{\partial f}{\partial x}\Big|_{x=\xi}\right)^T \cdot (x- (x- \delta \frac{\partial f}{\partial x})) + 0\\
        & = f(\xi) + \delta \left( \frac{\partial f}{\partial x}\right)^T \cdot  \frac{\partial f}{\partial x} + 0\\
-       & = f(\xi) + \sum_p \underbrace{ \delta \left( \frac{\partial f}{\partial x}\right)^2}_{R_p} + 0
+       & = f(\xi) + \sum_p \underbrace{ \delta \left( \frac{\partial f}{\partial x}\right)^2}_{R_p} +\ 0
 \end{flalign*}
 
-
+\pause
 \begin{itemize}
 \item The heatmap is positive but not conservative
 \item The heatmap only measures a local effect
@@ -263,10 +268,12 @@ If we assume a locally constant function we get
 \includegraphics[height=2.75cm, width=11cm]{image/deep_taylor_decomposition_example}
  \end{figure}
 \vspace{0.25cm}
-We view each layer as a seperate function and write the Taylor decomposition of $\sum_j R_j \text{ at } \{x_i\}$ as
+
+\pause
+We view each layer as a separate function and write the Taylor decomposition of $\sum_j R_j \text{ at } \{x_i\}$ as
 \begin{align*}
-    \sum_j R_j &= \left( \frac{\partial (\sum_j R_j)}{\partial \{x_i\}}\Big|_{\{\tilde{x_i}\}}\right)^T \cdot (\{x_i\}-\{\tilde{x}\}) + \epsilon\\
-    &= \sum_i \underbrace{\sum_j \frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}\}} \cdot (x_i-\tilde{x_i})}_{R_i} + \epsilon
+    \sum_j R_j &= \left( \frac{\partial (\sum_j R_j)}{\partial \{x_i\}}\Big|_{\{\tilde{x}_i\}}\right)^T \cdot (\{x_i\}-\{\tilde{x}_i\}) + \epsilon\\
+    &= \sum_i \underbrace{\sum_j \frac{\partial R_j}{\partial x_i}\Big|_{\tilde{x}_i} \cdot (x_i-\tilde{x}_i)}_{R_i} +\ \epsilon
 \end{align*}
 \vspace{-0.25cm}
 
@@ -283,7 +290,7 @@ We view each layer as a seperate function and write the Taylor decomposition of 
 \item  If each local Taylor decomposition is \textit{conservative} then the chain of equalities is also \textit{conservative} (layer-wise relevance conservation)
 \item[$\rightarrow$] $R_f = ...= \sum_i R_i = ... = \sum_p R_p$
 \item  If each local Taylor decomposition is \textit{positive} then the chain of equalities is also \textit{positive} 
-\item[$\rightarrow$] $R_f,...,\{R_i\},...,\{R_P\} \geq 0$
+\item[$\rightarrow$] $R_f,...,\{R_i\},...,\{R_p\} \geq 0$
 \item If each local Taylor decomposition is \textit{consistent} then the chain of equalities is also \textit{consistent} 
 \end{itemize}
 
@@ -297,12 +304,13 @@ We view each layer as a seperate function and write the Taylor decomposition of 
 \begin{frame}
 \frametitle{Setting}
 \vspace{0.5cm}
+
 Consider a simple detection-pooling one layer neural network with
 \vspace{-0.2cm}
  \begin{columns}
           \begin{column}[T]{5.5cm}
 		\begin{align*}
-		x_j &= \max(0, \sum_i x_iw_{ij} + b_j)\\
+		x_j &= \max(0, \sum_i x_i w_{ij} + b_j)\\
 		x_k &= \sum_j x_j, \ b_j \leq 0, \forall j
 		\end{align*}
             \end{column} 
@@ -313,11 +321,13 @@ Consider a simple detection-pooling one layer neural network with
 	\end{column}
 \end{columns} 
 \vspace{0.25cm}
+
+\pause
 \begin{enumerate}
 \item $R_k = x_k$ and thus $R_k = \sum_j x_j$
 \item  Chose a root point and redistribute $R_k$ on neurons $x_j$\\
 $\rightarrow$ $R_j = \frac{\partial R_k}{\partial x_j}\Big|_{\{\tilde{x}_j\}} \cdot (x_j - \tilde{x}_j) $, with $\{\tilde{x}_j\}=0$
-\item Since $\frac{\partial R_k}{\partial x_j}=1$ we obtain $R_j = x_j$
+\item Since $\frac{\partial R_k}{\partial x_j}\Big|_{\{\tilde{x}_j\}}=1$ we obtain $R_j = x_j$
 \item Apply Taylor decomposition another time and get\\
  $R_i = \sum_j\frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i\}^{(j)}} \cdot (x_i - \tilde{x}_i^{(j)})$
 \end{enumerate}
@@ -330,19 +340,19 @@ $\rightarrow$ $R_j = \frac{\partial R_k}{\partial x_j}\Big|_{\{\tilde{x}_j\}} \c
 \begin{frame}
 \frametitle{Derivation of Propagation Rules}
 \vspace{0.3cm}
-Given $R_j = \max(0, \sum_i x_iw_{ij} + b_j)$ and $b_j \leq 0$ and a search direction $\{v_i\}^{(j)}$ in the input space such that
+Given $R_j = \max(0, \sum_i x_i w_{ij} + b_j)$ and $b_j \leq 0$ and a search direction $\{v_i\}^{(j)}$ in the input space such that
 
 \begin{equation}
-\tilde{x}^{(j)} = x_i + t v_i ^{(j)} \Leftrightarrow t = \frac{\tilde{x_i}^{(j)} - x_i}{v_i^{(j)}}
+\tilde{x}^{(j)}_i = x_i + t v_i ^{(j)} \Leftrightarrow t = \frac{\tilde{x}_i^{(j)} - x_i}{v_i^{(j)}}
 \label{equ:search_direction}
 \end{equation}
 
 \vspace{0.2cm}
-If the data point itself is not a root point, i.e. $\sum_i x_i w_{ij} + b_j>0$ the nearest root along $\{v_i\}^{(j)}$ is given by the intersection of equation \eqref{equ:search_direction} and $\sum_i\tilde{ x_i}^{(j)} w_{ij} + b_j=0$ which can be resolved to 
+If the data point itself is not a root point, i.e. $\sum_i x_i w_{ij} + b_j>0$ the nearest root along $\{v_i\}^{(j)}$ is given by the intersection of equation \eqref{equ:search_direction} and $\sum_i\tilde{x}_i^{(j)} w_{ij} + b_j=0$ which can be resolved to 
 \vspace{-0.1cm}
 \begin{align*}
-0 &= \sum_i x_i w_{ij} + b_j + \sum_i v_i^{(j)} t \\
-x_i - \tilde{x_i}^{(j)} & = \frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}
+0 &= \sum_i x_i w_{ij} + b_j + \sum_i v_i^{(j)} t w_{ij} \\
+x_i - \tilde{x}_i^{(j)} & = \frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}
 \end{align*}
 
 \end{frame}
@@ -352,16 +362,17 @@ x_i - \tilde{x_i}^{(j)} & = \frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{i
 \vspace{0.4cm}
 Starting from the Taylor expansion we can plug in 
 \begin{align*}
-x_i - \tilde{x_i}^{(j)} = \frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}
+x_i - \tilde{x}_i^{(j)} = \frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}
 \end{align*}
 \vspace{-0.2cm}
 To get
 \vspace{-0.2cm}
 \begin{align*}
-R_i & = \sum_j \frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i^{(j)}} \cdot (x_i - \tilde{x}_i^{(j)})= \sum_j w_{ij}\frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}\\
+R_i & = \sum_j \frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i^{(j)}\}} \cdot (x_i - \tilde{x}_i^{(j)})= \sum_j w_{ij}\frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}\\
 &= \sum_j\frac{v_i^{(j)} w_{ij}}{\sum_i v_i^{(j)} w_{ij}} R_j \numberthis \label{equ:relevance_model}
 \end{align*}
 
+\pause
 The relevance propagation rule can be calculated with the following steps
 \begin{enumerate}
 	\item Define a segment with search direction $\{v_i\}^{(j)}$
@@ -373,20 +384,28 @@ The relevance propagation rule can be calculated with the following steps
 
 
 
-\subsection[$w^2$-rule]{$w^2$-rule}
+\subsection[$\omega^2$-rule]{$\omega^2$-rule}
 
 
 \begin{frame}
-\frametitle{$w^2$-rule $\mathcal{X}=\mathbb{R}^d$}
+\frametitle{$\omega^2$-rule $\mathcal{X}=\mathbb{R}^d$}
+\vspace{0.35cm}
 Choose a root point which is nearest in the euclidean sense\\
 
 \begin{enumerate}
 	\item Search direction $\{v_i\}^{(j)} = w_{ij}$ (gradient of $R_j$)
-	\item No domain restriction
+	\item No domain restriction and for $\tilde{x}_i^{(j)} = x_i - \frac{R_j}{\sum_{i'}w_{i'j}^2}$
+	\begin{align*}
+		R_j(\tilde{x}) &= \max(0, \sum_i (x_i -\frac{R_j}{\sum_{i'}w_{i'j}^2}) w_{ij}  + b_j) \\
+		&= \max(0, \underbrace{\sum_i (x_i w_{ij} + b_j)}_{=R_j} - R_j \underbrace{\frac{\sum_{i}w_{ij}^2}{\sum_{i'}w_{i'j}^2}}_{=1} )= 0 
+	\end{align*}
+	\vspace{-0.1cm}
 	\item Inject search direction in equation \eqref{equ:relevance_model}
 \end{enumerate}
-\vspace{0.25cm}
-\begin{block}{$w^2$-rule}
+
+\pause
+\vspace{-0.15cm}
+\begin{block}{$\omega^2$-rule}
 \begin{equation*}
 R_i =\sum_j\frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i\}^{(j)}} \cdot (x_i - \tilde{x}_i^{(j)}) =  \sum_j\frac{w_{ij}^2}{\sum_{i'} w_{i'j}^2} R_j
 \end{equation*}
@@ -402,15 +421,18 @@ R_i =\sum_j\frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i\}^{(j)}} \cdot 
 \frametitle{$w^2$-rule $\mathcal{X}=\mathbb{R}^d$}
 \vspace{0.3cm}
 \begin{block}{Proposition 1}
-For all functions $g \in G$, the deep Taylor decomposition with the $w^2$-rule is consistent.
+For all functions $g \in G$, the deep Taylor decomposition with the $\omega^2$-rule is consistent.
 \end{block}
+\pause
 \textbf{Proof}\\
 \begin{enumerate}
 \item \textit{Conservative}
+\vspace{-0.2cm}
 \begin{align*}
 \sum_i R_i &= \sum_i\Big(\sum_j \frac{w_{ij}^2}{\sum_{i'}w_{i'j}^2}R_j\Big)\\
-   		&= \sum_j \frac{\sum_i w_{ij}^2}{\sum_{i'} w_{i'j}^2}R_j = \sum_j R_j = \sum_j x_j = f(x)
+   		&= \sum_j \underbrace{\frac{\sum_i w_{ij}^2}{\sum_{i'} w_{i'j}^2}}_{=1}R_j = \sum_j R_j = \sum_j x_j = f(x)
 \end{align*}
+\vspace{-0.5cm}
 \item \textit{Positive}
 \begin{align*}
 R_i = \sum_j \frac{w_{ij}^2}{\sum_{i'} w_{i'j}^2}R_j = \sum_j \underbrace{w_{ij}^2}_{\geq 0}  \underbrace{\frac{1}{\sum_{i'} w_{i'j}^2}}_{>0}  \underbrace{R_j}_{\geq 0} \geq 0
@@ -428,21 +450,21 @@ R_i = \sum_j \frac{w_{ij}^2}{\sum_{i'} w_{i'j}^2}R_j = \sum_j \underbrace{w_{ij}
 
 \begin{frame}
 \frametitle{$z^+$-rule $\mathcal{X}=\mathbb{R}_+^d$}
-\vspace{0.25cm}
+\vspace{0.5cm}
 Search for a root point on the segment $(\{x_i 1_{w_{ij}<0}\},\{x_i\})\subset \mathbb{R}_+^d$\\
 \begin{enumerate}
 	\item Search direction $\{v_i\}^{(j)} = x_i - x_i 1_{w_{ij}<0} = x_i 1_{w_{ij}\geq0}$
 	\item If $\{x_i\} \in \mathbb{R}_+^d$ so is the whole domain, further for $w_{ij}^-=\min(0,w_{ij})$
 	\
 	\begin{align*}
-		R_j(\{x_i1_{w_{ij}<0}\}) = \max(0, \sum_i x_i 1_{w_{ij}<0} w_{ij} + b_j)\\
-		= \max(0, \sum_i x_i  w_{ij}^- + b_j) = 0
+		R_j(\{x_i1_{w_{ij}<0}\}) =& \max(0, \sum_i x_i 1_{w_{ij}<0} w_{ij} + b_j)\\
+		=& \max(0, \underbrace{\sum_i x_i  w_{ij}^-}_{\leq 0} +\ b_j) = 0
 	\end{align*}
-	
+	\vspace{-0.25cm}
 	\item Inject search direction in equation \eqref{equ:relevance_model}
 \end{enumerate}
 
-
+\pause
 \begin{block}{$z^+$-rule}
 \begin{equation*}
 R_i =  \sum_j \frac{x_i w_{ij}^+}{\sum_{i'} x_{i'} w_{i'j}^+} R_j
@@ -455,16 +477,18 @@ R_i =  \sum_j \frac{x_i w_{ij}^+}{\sum_{i'} x_{i'} w_{i'j}^+} R_j
 
 \begin{frame}
 \frametitle{$z^+$-rule $\mathcal{X}=\mathbb{R}^d_+$}
-\vspace{-0.4cm}
+
 \begin{block}{Proposition 2}
 For all functions $g \in G$ and data points $\{x_i\} \in \mathbb{R}_+^d$, the deep Taylor decomposition with the $z^+$-rule is consistent.
 \end{block}
 \vspace{0.5cm}
+
+\pause
 \textbf{Proof}\\
 If $\sum_i x_i w_{ij}^+ >0$ the same proof as for the $w^2$-rule applies, if $\sum_i x_i w_{ij}^+ =0$ it follows that $\forall i: x_i w_{ij} \leq0$ and 
 
 \begin{align*}
- R_j = x_j = 0
+ R_j = x_j = \max(0,\underbrace{\sum_i x_i w_{ij}}_{\leq 0} +\ b_j) = 0
 \end{align*}
 and there is no relevance to redistribute to the lower layers.
 
@@ -482,20 +506,21 @@ and there is no relevance to redistribute to the lower layers.
 \begin{frame}
 \frametitle{$z^b$-rule $\mathcal{X}=\mathcal{B}$}
 \vspace{0.4cm}
-Often we have a bounded input space $\mathcal{B} = \{\{x_i\} : \forall_{i=1}^d l_i\leq x_i \leq h_i\} $ and a segment $(\{l_i 1_{w_{ij}>0} + h_i 1_{w_{ij}<0}\},\{x_i\})\subset \mathcal{B}$\\
+Given a bounded input space $\mathcal{B} = \{\{x_i\} : \forall_{i=1}^d l_i\leq x_i \leq h_i\} $, with $l_i \leq 0$ and $ h_i \geq 0$ and we chose the segment $(\{l_i 1_{w_{ij}>0} + h_i 1_{w_{ij}<0}\},\{x_i\})\subset \mathcal{B}$\\
 \begin{enumerate}
 	\item Search direction $\{v_i\}^{(j)} = x_i - l_i 1_{w_{ij}>0} - h_i 1_{w_{ij}<0}$
-	\item If $\{x_i\} \in \mathcal{B}$ so is the whole domain, further for $w_{ij}^-=\min(0,w_{ij})$ and $w_{ij}^+=\max(0,w_{ij})$
+	\item If $\{x_i\} \in \mathcal{B}$ so is the whole domain and for $w_{ij}^-=\min(0,w_{ij})$, $w_{ij}^+=\max(0,w_{ij})$
 	\vspace{-0.25cm}
 	\begin{align*}
 		R_j(\{l_i 1_{w_{ij}>0} + h_i 1_{w_{ij}<0}\}) &= \max(0, \sum_i l_i 1_{w_{ij}>0} w_{ij} + h_i 1_{w_{ij}<0} w_{ij} + b_j)\\
-		&=\max(0, \sum_i l_i w_{ij}^+ + h_i w_{ij}^- + b_j)= 0
+		&=\max(0, \sum_i \underbrace{l_i w_{ij}^+}_{\leq 0} + \underbrace{h_i w_{ij}^-}_{\leq 0} + b_j)= 0
 	\end{align*}
-	\vspace{-0.25cm}
+	\vspace{-0.75cm}
 	\item Inject search direction in equation \eqref{equ:relevance_model}
 \end{enumerate}
-\vspace{-0.25cm}
 
+\pause
+\vspace{-0.15cm}
 \begin{block}{$z^b$-rule}
 \begin{equation*}
 R_i =  \sum_j \frac{x_i w_{ij} - l_i w_{ij}^+ - h_i w_{ij}^-}{\sum_{i'} x_{i'} w_{i'j}  - l_i w_{i'j}^+ - h_i w_{i'j}^-} R_j
@@ -513,7 +538,7 @@ For all function $g \in G$ and data points $\{x_i\} \in \mathcal{B}$, the deep T
 \end{block}
 \vspace{0.5cm}
 \textbf{Proof}\\
-Since the proof is similar to the proofs of proposition 1 and 2 but lenghty I refer to the literature.
+Since the proof is similar to the proofs of proposition 1 and 2 but lengthy I refer to the literature.
 
 \end{frame}
 
@@ -526,11 +551,11 @@ Since the proof is similar to the proofs of proposition 1 and 2 but lenghty I re
 \begin{frame}
 \frametitle{Example MNIST: Setting}
 \vspace{0.5cm}
-Training of a neural network to detect a handwritten digit between 0-3 next to a distractor digit from 4-9 given the following setting:
+Training of a neural network to detect a handwritten digit between 0-3 next to a distracting digit from 4-9 given the following setting:
 \begin{itemize}
-\item images of size 28 x 56 pixels
-\item 28 x 56 = 1568 input neurons $\{x_i\}$, one hidden layer with 400 neurons $\{x_j\}$ and one output $x_k$
-\item weights are random initialized $\{w_{ij}\}$ and bias $\{b_j\}$ is initialized to zero and non negative during training
+\item Images of size 28 x 56 pixels and 1568 input neurons $\{x_i\}$
+\item One hidden layer with 400 neurons $\{x_j\}$ and one output $x_k$
+\item Random initialized weights $\{w_{ij}\}$ and non-negative bias $\{b_j\}$ initialized to zero
 \item Training with 300000 iterations of stochastic gradient descent with a batch size of 20 
 \end{itemize}
 \begin{figure}
@@ -576,7 +601,7 @@ Many problems require very complex deep architectures
 \vspace{-1cm}
 \end{frame}
 
-
+\iffalse
 \begin{frame}
 \frametitle{Relevance Model}
 \vspace{0.25cm}
@@ -591,14 +616,14 @@ A relevance model is a function that maps a set of neuron activations at a given
 \end{figure}
 \vspace{-0.5cm}
 \end{frame}
-
+\fi
 
 \begin{frame}
 \frametitle{Min-Max Relevance Model}
 \vspace{0.4cm}
-Trainable relevance model designed to incorporate bottom-up and top-down information
+Trainable relevance model defined as
 \begin{align*}
-y_i &= \max(0,\sum_ix_iv_{ij} + a_j)\\
+y_j &= \max(0,\sum_ix_iv_{ij} + a_j)\\
 \hat{R}_k &= \sum_j y_j,
 \end{align*}
 where $a_j = \min(0,\sum_l R_l v_{lj} + d_j)$ is a negative bias
@@ -660,7 +685,7 @@ If the upper layer was explained by the $z^+$-rule, relevance $R_k$ can be writt
           \begin{column}{5cm}
 			\begin{align*}
 			R_k &= \sum_l \frac{x_k w_{kl}^+}{\sum_{k'} x_{k'} w_{k'l}^+} R_l\\
-			R_k &= (\sum_j x_j) \cdot \frac{\norm{\{x_j\}}_p}{\norm{\{x_j\}}_1}   \sum_l \frac{w_{kl}^+R_l}{\sum_{k'} x_{k'} w_{k'l}^+} 
+				&= (\sum_j x_j) \cdot \frac{\norm{\{x_j\}}_p}{\norm{\{x_j\}}_1}   \sum_l \frac{w_{kl}^+R_l}{\sum_{k'} x_{k'} w_{k'l}^+} 
 			\end{align*}
             \end{column} 
             \begin{column}{5cm}

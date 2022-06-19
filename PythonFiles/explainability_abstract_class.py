@@ -12,9 +12,10 @@ import numpy as np
 
 class explainability(metaclass=abc.ABCMeta):
     
-    def __init__(self, model, result):
+    def __init__(self, model, result, input_vector):
         self.model = model
         self.result = result
+        self.input_vector = input_vector
         
         
     @abstractmethod

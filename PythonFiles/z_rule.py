@@ -10,11 +10,6 @@ from PythonFiles.explainability_abstract_class import explainability
 from tensorflow.keras import backend as K
 
 class z_rule(explainability):
-    
-    def __init__(self, model, result, input_vector):
-        self.model = model
-        self.result = result
-        self.input_vector = input_vector
         
     def fit(self):
         self.getInput_activation()

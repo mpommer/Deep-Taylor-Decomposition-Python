@@ -15,14 +15,18 @@ pd.set_option('display.width', 200)
 pd.set_option('display.float_format', lambda x: "%.2f" % x)
 
 
-def data_reading_transformation(path_url, minmaxscaler=False):
+def data_reading_transformation(path_url, minmaxscaler=False, withName=False):
     df_gender_submission = pd.read_csv(path_url + "/gender_submission.csv")
     y_test = df_gender_submission
     df_train = pd.read_csv(path_url + "/train.csv")
     df_test = pd.read_csv(path_url + "/test.csv")
     
-    df_train_reduced = df_train.drop(labels=['Name', "Ticket", "Cabin"], axis=1)
-    df_test_reduced = df_test.drop(labels=['Name', "Ticket", "Cabin"], axis=1)
+    if withName:
+        df_train_reduced = df_train.drop(labels=["Name", "Cabin", "Ticket"], axis=1)
+        df_test_reduced = df_test.drop(labels=["Name", "Cabin", "Ticket"], axis=1)
+    else:        
+        df_train_reduced = df_train.drop(labels=['Name', "Ticket", "Cabin", "PassengerId"], axis=1)
+        df_test_reduced = df_test.drop(labels=['Name', "Ticket", "Cabin", "PassengerId"], axis=1)
         
     
     ageMeanDad = int(df_train_reduced[(df_train_reduced["Survived"]==0)][[ "Age"]].mean())

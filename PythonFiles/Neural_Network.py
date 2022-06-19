@@ -7,12 +7,10 @@ Created on Sun May  1 17:57:47 2022
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.layers import Dense
 from tensorflow import keras
+from tensorflow.keras import initializers
 import tensorflow as tf
 import pandas as pd
-seed = 1864
-tf.random.set_seed(seed)
-import numpy as np
-np.random.seed(seed)
+seed = 12345
 
 
 class NonNeg(tf.keras.constraints.Constraint):
@@ -25,11 +23,6 @@ class NonNeg(tf.keras.constraints.Constraint):
      w = tf.cast(w < 0, w.dtype) * w
      return w
  
-    
-    # if w[0]<0:
-    #     return w
-    # else:
-    #     return 0
 
   def get_config(self):
     return {'ref_value': self.ref_value}
@@ -41,19 +34,30 @@ class NN:
         self.x_train = x_train
         self.y_train = y_train
         
-    def fit(self, layers, neurons):
+    def fit(self, layers, neurons, verbose = 0):
+        tf.random.set_seed(seed)
 
         model = keras.Sequential()
-        for l in range(layers):
-            model.add(Dense(neurons[l], input_dim=self.x_train.shape[1], activation = "ReLU", bias_constraint=NonNeg()))
+        model.add(Dense(neurons[0], input_dim=self.x_train.shape[1], activation = "ReLU", bias_constraint=NonNeg()))
+
+        # for l in range(layers):
+        #     model.add(Dense(neurons[l], input_dim=self.x_train.shape[1], activation = "ReLU", bias_constraint=NonNeg()))
             
-        model.add(Dense(1, activation='sigmoid', name='output'))
+        # model.add(Dense(1, input_dim=neurons[-1],activation="ReLU", trainable=False, name='output'))
+        model.add(Dense(1, input_dim=neurons[-1],
+                        kernel_initializer=initializers.RandomNormal(mean=1., stddev=0.),
+                        bias_initializer=initializers.Zeros(),
+                        activation="linear", 
+                        trainable=False, 
+                        name='output'))
 
-        model.compile(loss="mean_squared_error", optimizer= "adam", metrics=['mean_absolute_error','mean_squared_error'])
+        # model.add(AveragePooling1D(pool_size=2, strides=1, name = "output"))
 
-        es = EarlyStopping(monitor='val_loss', mode='min',min_delta=1e-12, patience=100, restore_best_weights=True)
+        model.compile(loss="mean_squared_error", optimizer= "adam", metrics=['mean_squared_error'])
+
+        es = EarlyStopping(monitor='mean_squared_error', mode='min',min_delta=1e-8, patience=25, restore_best_weights=True)
                             
-        history = model.fit(self.x_train, self.y_train, epochs=500, batch_size=1, verbose=0, validation_split=0.2, callbacks=[es])
+        history = model.fit(self.x_train, self.y_train, epochs=250, batch_size=1, verbose=verbose, validation_split=0.2, callbacks=[es])
 
         mae = pd.DataFrame(history.history).copy()
         
@@ -69,14 +73,14 @@ class NN:
         
         
     def trainResult(self):
-        train_result = self.model.predict(self.x_train).round()
+        train_result = [1 if x >0.5 else 0 for x in self.model.predict(self.x_train)]
 
         train = [1 if x ==y else 0 for (x,y) in zip(train_result,self.y_train)]
         
         return print(sum(train)/len(train))
 
     def testResult(self, x_test, y_test):
-        test_result = self.model.predict(x_test).round()
+        test_result = [1 if x >0.5 else 0 for x in self.model.predict(x_test)]
 
         test = [1 if x ==y else 0 for (x,y) in zip(test_result,y_test.iloc[:,1])]
         

@@ -9,19 +9,19 @@ from PythonFiles.dataReading import data_reading_transformation
 from PythonFiles.omega_squared import omega_squared
 from PythonFiles.z_rule import z_rule 
 from PythonFiles.z_plusrule import z_plusrule 
-
+import pandas as pd
 from PythonFiles.Neural_Network import NN
 import numpy as np
 
-path = "data/titanic"
+path_url = "data/titanic"
 
 minmaxscaler=True
 
-x_train, y_train, x_test, y_test, feature_name = data_reading_transformation(path, minmaxscaler)
+x_train, y_train, x_test, y_test, feature_name = data_reading_transformation(path_url, minmaxscaler, withName = True)
 
 neural_net = NN(x_train, y_train)
 
-neural_net.fit(layers = 1, neurons = [25]*1)
+neural_net.fit(layers = 1, neurons = [10]*1)
 
 model = neural_net.getModel()
 
@@ -29,11 +29,15 @@ neural_net.testResult(x_test,y_test)
 
 prediction = neural_net.predict(x_test)
 
-t = model.layers[0].weights[0].numpy()
+w1 = model.layers[0].weights[0].numpy()
+b1 = model.layers[0].weights[1].numpy()
+w2 = model.layers[1].weights[0].numpy()
+b2 = model.layers[1].weights[1].numpy()
 
 #%% omega ^2- rule
 
-taylor_dec = omega_squared(model, prediction[0])
+passenger = 89
+taylor_dec = omega_squared(model, prediction[passenger], x_test[passenger])
         
 res = taylor_dec.fit()
         
