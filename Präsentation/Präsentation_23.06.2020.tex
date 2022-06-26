@@ -38,7 +38,7 @@
 \end{figure}
 \vspace{0.25cm}
 Deep neural networks perform great on a variety of problems \nocite{*}\\
-\textbf{but} how can we justify decisions made by complex deep architectures?\\
+\textbf{but} how can we explain decisions made by complex deep architectures?\\
 \end{frame} 
 
 
@@ -64,7 +64,7 @@ Deep neural networks perform great on a variety of problems \nocite{*}\\
 \textbf{Deep neural networks revolutionized amongst others the field of}\\
 \vspace{0.25cm}
        \begin{columns}[T]
-          \column{0.65\textwidth}
+          \column{0.62\textwidth}
              \centering
              \includegraphics[height=5cm, width=8cm]{image/NLP_chatbot}
            \column{0.35\textwidth}
@@ -77,6 +77,7 @@ Deep neural networks perform great on a variety of problems \nocite{*}\\
 			\item[--] ...
 			\end{itemize}
          \end{columns} 
+\pause
 \vspace{0.5cm}
 With one major drawback $\rightarrow$ \textbf{lack of transparency}
 \end{frame}
@@ -136,7 +137,7 @@ In the context of image classification we define the following mathematical fram
 \item Positive valued function $f:\mathbb{R}^d\to \mathbb{R}^+$, where the output $f(x)$ defines either the probability that the object is present or the quantity of the object in question
 \item[$\rightarrow$] $f(x)>0$ expresses the presence of the object  
 
-
+\pause
 \end{itemize}
 
  \begin{columns}
@@ -203,7 +204,7 @@ where d denotes the number of pixels
 
 
 
-\subsection[Methodology]{Methodology}
+\subsection[Taylor Expansion and Sensitivity Analysis]{Taylor Expansion and Sensitivity Analysis}
 
 \begin{frame}
 \frametitle{Taylor Expansion}
@@ -238,10 +239,10 @@ The challenge of finding a root point
 
 \begin{frame}
 \frametitle{Sensitivity Analysis}
-\vspace{0.25cm}
-Root point at infinitesimally small distance from the actual point, i.e. $\xi = x- \delta \frac{\partial f}{\partial x}$, where $\delta$ is small\\
+\vspace{0.35cm}
+Choose a point at infinitesimally small distance from the actual point, i.e. $\xi = x- \delta \frac{\partial f}{\partial x}$, where $\delta$ is small\\
 \pause
-\vspace{0.1cm}
+\vspace{0.35cm}
 If we assume a locally constant function we get
 \begin{flalign*}
  f(x) & =f(\xi) + \left( \frac{\partial f}{\partial x}\Big|_{x=\xi}\right)^T \cdot (x- (x- \delta \frac{\partial f}{\partial x})) + 0\\
@@ -339,23 +340,27 @@ $\rightarrow$ $R_j = \frac{\partial R_k}{\partial x_j}\Big|_{\{\tilde{x}_j\}} \c
 
 \begin{frame}
 \frametitle{Derivation of Propagation Rules}
-\vspace{0.3cm}
-Given $R_j = \max(0, \sum_i x_i w_{ij} + b_j)$ and $b_j \leq 0$ and a search direction $\{v_i\}^{(j)}$ in the input space such that
+\vspace{0.5cm}
+Given $R_j = \max(0, \sum_i x_i w_{ij} + b_j)$ and $b_j \leq 0$ and a search direction $\{v_i\}^{(j)}$
 
 \begin{equation}
 \tilde{x}^{(j)}_i = x_i + t v_i ^{(j)} \Leftrightarrow t = \frac{\tilde{x}_i^{(j)} - x_i}{v_i^{(j)}}
 \label{equ:search_direction}
 \end{equation}
 
-\vspace{0.2cm}
-If the data point itself is not a root point, i.e. $\sum_i x_i w_{ij} + b_j>0$ the nearest root along $\{v_i\}^{(j)}$ is given by the intersection of equation \eqref{equ:search_direction} and $\sum_i\tilde{x}_i^{(j)} w_{ij} + b_j=0$ which can be resolved to 
-\vspace{-0.1cm}
+\pause
+\vspace{0.1cm}
+If $\sum_i x_i w_{ij} + b_j>0$ the nearest root along the search direction $\{v_i\}^{(j)}$ is given by the intersection of equation \eqref{equ:search_direction} and $\sum_i\tilde{x}_i^{(j)} w_{ij} + b_j=0$  
 \begin{align*}
-0 &= \sum_i x_i w_{ij} + b_j + \sum_i v_i^{(j)} t w_{ij} \\
-x_i - \tilde{x}_i^{(j)} & = \frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}
+&               & 			0 &= \sum_i x_i w_{ij} + b_j + \sum_i v_i^{(j)} t w_{ij} \\[0.25em]
+&\Leftrightarrow& -t & = \frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}}\\[0.5em]
+&\Leftrightarrow& x_i - \tilde{x}_i^{(j)} & = \frac{\sum_i x_i w_{ij} + b_j}{\sum_i v_i^{(j)} w_{ij}} v_i^{(j)}
 \end{align*}
 
 \end{frame}
+
+
+
 
 \begin{frame}
 \frametitle{Derivation of Propagation Rules}
@@ -394,10 +399,10 @@ Choose a root point which is nearest in the euclidean sense\\
 
 \begin{enumerate}
 	\item Search direction $\{v_i\}^{(j)} = w_{ij}$ (gradient of $R_j$)
-	\item No domain restriction and for $\tilde{x}_i^{(j)} = x_i - \frac{R_j}{\sum_{i'}w_{i'j}^2}$
+	\item No domain restriction and for $\tilde{x}_i^{(j)} = x_i - \frac{R_j(x_i)}{\sum_{i'}w_{i'j}^2} w_{ij}$
 	\begin{align*}
-		R_j(\tilde{x}) &= \max(0, \sum_i (x_i -\frac{R_j}{\sum_{i'}w_{i'j}^2}) w_{ij}  + b_j) \\
-		&= \max(0, \underbrace{\sum_i (x_i w_{ij} + b_j)}_{=R_j} - R_j \underbrace{\frac{\sum_{i}w_{ij}^2}{\sum_{i'}w_{i'j}^2}}_{=1} )= 0 
+		R_j(\tilde{x}) &= \max(0, \sum_i (x_i -\frac{R_j(x_i) w_{ij}}{\sum_{i'}w_{i'j}^2}) w_{ij}  + b_j) \\
+		&= \max(0, \underbrace{\sum_i (x_i w_{ij} + b_j)}_{=R_j(x_i)} - R_j (x_i) \underbrace{\frac{\sum_{i}w_{ij}^2}{\sum_{i'}w_{i'j}^2}}_{=1} )= 0 
 	\end{align*}
 	\vspace{-0.1cm}
 	\item Inject search direction in equation \eqref{equ:relevance_model}
@@ -450,12 +455,12 @@ R_i = \sum_j \frac{w_{ij}^2}{\sum_{i'} w_{i'j}^2}R_j = \sum_j \underbrace{w_{ij}
 
 \begin{frame}
 \frametitle{$z^+$-rule $\mathcal{X}=\mathbb{R}_+^d$}
-\vspace{0.5cm}
+\vspace{0.35cm}
 Search for a root point on the segment $(\{x_i 1_{w_{ij}<0}\},\{x_i\})\subset \mathbb{R}_+^d$\\
 \begin{enumerate}
 	\item Search direction $\{v_i\}^{(j)} = x_i - x_i 1_{w_{ij}<0} = x_i 1_{w_{ij}\geq0}$
-	\item If $\{x_i\} \in \mathbb{R}_+^d$ so is the whole domain, further for $w_{ij}^-=\min(0,w_{ij})$
-	\
+	\item If $\{x_i\} \in \mathbb{R}_+^d$ so is the whole domain, further for $w_{ij}^-=\min(0,w_{ij})$ and $w_{ij}^+ = \max(0, w_{ij})$
+	\vspace{-0.25cm}
 	\begin{align*}
 		R_j(\{x_i1_{w_{ij}<0}\}) =& \max(0, \sum_i x_i 1_{w_{ij}<0} w_{ij} + b_j)\\
 		=& \max(0, \underbrace{\sum_i x_i  w_{ij}^-}_{\leq 0} +\ b_j) = 0
@@ -463,7 +468,7 @@ Search for a root point on the segment $(\{x_i 1_{w_{ij}<0}\},\{x_i\})\subset \m
 	\vspace{-0.25cm}
 	\item Inject search direction in equation \eqref{equ:relevance_model}
 \end{enumerate}
-
+\vspace{-0.2cm}
 \pause
 \begin{block}{$z^+$-rule}
 \begin{equation*}
@@ -506,7 +511,7 @@ and there is no relevance to redistribute to the lower layers.
 \begin{frame}
 \frametitle{$z^b$-rule $\mathcal{X}=\mathcal{B}$}
 \vspace{0.4cm}
-Given a bounded input space $\mathcal{B} = \{\{x_i\} : \forall_{i=1}^d l_i\leq x_i \leq h_i\} $, with $l_i \leq 0$ and $ h_i \geq 0$ and we chose the segment $(\{l_i 1_{w_{ij}>0} + h_i 1_{w_{ij}<0}\},\{x_i\})\subset \mathcal{B}$\\
+Given a bounded input space $\mathcal{B} = \{\{x_i\} : \forall_{i=1}^d l_i\leq x_i \leq h_i\} $, with $l_i \leq 0$ and $ h_i \geq 0$ and we search on the segment $(\{l_i 1_{w_{ij}>0} + h_i 1_{w_{ij}<0}\},\{x_i\})\subset \mathcal{B}$\\
 \begin{enumerate}
 	\item Search direction $\{v_i\}^{(j)} = x_i - l_i 1_{w_{ij}>0} - h_i 1_{w_{ij}<0}$
 	\item If $\{x_i\} \in \mathcal{B}$ so is the whole domain and for $w_{ij}^-=\min(0,w_{ij})$, $w_{ij}^+=\max(0,w_{ij})$
@@ -685,7 +690,7 @@ If the upper layer was explained by the $z^+$-rule, relevance $R_k$ can be writt
           \begin{column}{5cm}
 			\begin{align*}
 			R_k &= \sum_l \frac{x_k w_{kl}^+}{\sum_{k'} x_{k'} w_{k'l}^+} R_l\\
-				&= (\sum_j x_j) \cdot \frac{\norm{\{x_j\}}_p}{\norm{\{x_j\}}_1}   \sum_l \frac{w_{kl}^+R_l}{\sum_{k'} x_{k'} w_{k'l}^+} 
+				&= \bigl( \sum_j x_j \bigr)\cdot \frac{\norm{\{x_j\}}_p}{\norm{\{x_j\}}_1}   \sum_l \frac{w_{kl}^+R_l}{\sum_{k'} x_{k'} w_{k'l}^+} 
 			\end{align*}
             \end{column} 
             \begin{column}{5cm}
@@ -714,7 +719,7 @@ R_j = \frac{x_j}{\sum_{j'} x_{j'}}R_k
 \begin{equation*}
 R_i = \sum_j \frac{q_{ij}}{\sum_{i'} q_{i'j}} R_j
 \end{equation*}
-where $q_{ij}= v_{ij}^2$, $q_{ij}= x_i v_{ij}^+$ or $q_{ij}= x_i v_{ij} - l_i v_{ij}^+ - h_i v_{ij}^-$ for the $w^2$-rule, $z^+$-rule and the $z^b$- rule respectively
+where $q_{ij}= w_{ij}^2$, $q_{ij}= x_i w_{ij}^+$ or $q_{ij}= x_i w_{ij} - l_i w_{ij}^+ - h_i w_{ij}^-$ for the $w^2$-rule, $z^+$-rule and the $z^b$- rule respectively
 \end{itemize}
 \vspace{0.1cm}
 $\rightarrow$ The training-free relevance model is consistent\\

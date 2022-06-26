@@ -37,7 +37,7 @@ class explainability(metaclass=abc.ABCMeta):
         table = [["feature", "absolute relevance", "relevance in perc"]]
 
         for index, name in enumerate(feature_names):
-            value = [name, round(relevance_array[index],4), f"{np.round(relevance_array[index]/self.result, 4)*100} %"]
+            value = [name, round(relevance_array[index],4), f"{round(relevance_array[index]/float(self.result) *100, 2)} %"]
             table.append(value)
             
         print(tabulate(table))
