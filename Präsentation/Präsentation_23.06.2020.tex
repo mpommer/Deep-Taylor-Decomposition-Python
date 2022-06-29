@@ -401,7 +401,7 @@ Choose a root point which is nearest in the euclidean sense\\
 	\item Search direction $\{v_i\}^{(j)} = w_{ij}$ (gradient of $R_j$)
 	\item No domain restriction and for $\tilde{x}_i^{(j)} = x_i - \frac{R_j(x_i)}{\sum_{i'}w_{i'j}^2} w_{ij}$
 	\begin{align*}
-		R_j(\tilde{x}) &= \max(0, \sum_i (x_i -\frac{R_j(x_i) w_{ij}}{\sum_{i'}w_{i'j}^2}) w_{ij}  + b_j) \\
+		R_j(\{\tilde{x}_i^{(k)}\}) &= \max(0, \sum_i (x_i -\frac{R_j(x_i) w_{ij}}{\sum_{i'}w_{i'j}^2}) w_{ij}  + b_j) \\
 		&= \max(0, \underbrace{\sum_i (x_i w_{ij} + b_j)}_{=R_j(x_i)} - R_j (x_i) \underbrace{\frac{\sum_{i}w_{ij}^2}{\sum_{i'}w_{i'j}^2}}_{=1} )= 0 
 	\end{align*}
 	\vspace{-0.1cm}
@@ -560,7 +560,7 @@ Training of a neural network to detect a handwritten digit between 0-3 next to a
 \begin{itemize}
 \item Images of size 28 x 56 pixels and 1568 input neurons $\{x_i\}$
 \item One hidden layer with 400 neurons $\{x_j\}$ and one output $x_k$
-\item Random initialized weights $\{w_{ij}\}$ and non-negative bias $\{b_j\}$ initialized to zero
+\item Random initialized weights $\{w_{ij}\}$ and non-positive bias $\{b_j\}$ initialized to zero
 \item Training with 300000 iterations of stochastic gradient descent with a batch size of 20 
 \end{itemize}
 \begin{figure}
