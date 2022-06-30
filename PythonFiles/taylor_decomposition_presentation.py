@@ -9,6 +9,48 @@ from PythonFiles.dataReading import data_reading_transformation
 from PythonFiles.omega_squared import omega_squared
 from PythonFiles.Neural_Network import NN
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#%%
 # preprocess data
 x_train, y_train, x_test, y_test, feature_name = data_reading_transformation(path_url = "data/titanic", minmaxscaler = True, withID = True)
 

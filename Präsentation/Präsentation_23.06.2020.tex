@@ -401,7 +401,7 @@ Choose a root point which is nearest in the euclidean sense\\
 	\item Search direction $\{v_i\}^{(j)} = w_{ij}$ (gradient of $R_j$)
 	\item No domain restriction and for $\tilde{x}_i^{(j)} = x_i - \frac{R_j(x_i)}{\sum_{i'}w_{i'j}^2} w_{ij}$
 	\begin{align*}
-		R_j(\{\tilde{x}_i^{(k)}\}) &= \max(0, \sum_i (x_i -\frac{R_j(x_i) w_{ij}}{\sum_{i'}w_{i'j}^2}) w_{ij}  + b_j) \\
+		R_j(\{\tilde{x}_i^{(j)}\}) &= \max(0, \sum_i (x_i -\frac{R_j(x_i) w_{ij}}{\sum_{i'}w_{i'j}^2}) w_{ij}  + b_j) \\
 		&= \max(0, \underbrace{\sum_i (x_i w_{ij} + b_j)}_{=R_j(x_i)} - R_j (x_i) \underbrace{\frac{\sum_{i}w_{ij}^2}{\sum_{i'}w_{i'j}^2}}_{=1} )= 0 
 	\end{align*}
 	\vspace{-0.1cm}
@@ -518,7 +518,7 @@ Given a bounded input space $\mathcal{B} = \{\{x_i\} : \forall_{i=1}^d l_i\leq x
 	\vspace{-0.25cm}
 	\begin{align*}
 		R_j(\{l_i 1_{w_{ij}>0} + h_i 1_{w_{ij}<0}\}) &= \max(0, \sum_i l_i 1_{w_{ij}>0} w_{ij} + h_i 1_{w_{ij}<0} w_{ij} + b_j)\\
-		&=\max(0, \sum_i \underbrace{l_i w_{ij}^+}_{\leq 0} + \underbrace{h_i w_{ij}^-}_{\leq 0} + b_j)= 0
+		&=\max(0, \sum_i \underbrace{l_i w_{ij}^+}_{\leq 0} + \underbrace{h_i w_{ij}^-}_{\leq 0} +\  b_j)= 0
 	\end{align*}
 	\vspace{-0.75cm}
 	\item Inject search direction in equation \eqref{equ:relevance_model}
@@ -576,7 +576,7 @@ Training of a neural network to detect a handwritten digit between 0-3 next to a
 \begin{figure}
 \includegraphics[height=2.5cm, width=12cm]{image/example_mnist_heatmap}
 \end{figure}
-
+\pause
 \begin{figure}
 \includegraphics[height=3.25cm, width=12cm]{image/example_mnist_consistent}
 \vspace{-0.75cm}
@@ -593,7 +593,7 @@ Training of a neural network to detect a handwritten digit between 0-3 next to a
 
 \begin{frame}
 \frametitle{Deep Networks}
-Many problems require very complex deep architectures
+Many problems require complex deep architectures
 
 \begin{figure}
 \label{fig1}
@@ -639,7 +639,7 @@ where $a_j = \min(0,\sum_l R_l v_{lj} + d_j)$ is a negative bias
           \begin{column}{5cm}
           		$\rightarrow$ Compute $\{v_{ij}, v_{lj},d_j\}$ by minimizing 
 			\begin{equation*}
-			\min\langle (\hat{R}_k-R_k)^2) \rangle
+			\min\langle (\hat{R}_k-R_k)^2 \rangle
 			\end{equation*}
             \end{column} 
             \begin{column}{6cm}
@@ -671,7 +671,7 @@ where $q_{ij}= v_{ij}^2$, $q_{ij}= x_i v_{ij}^+$ or $q_{ij}= x_i v_{ij} - l_i v_
 \end{itemize}
 \vspace{0.5cm}
 
-$\rightarrow$ The Min-Max relevance model is due to the minimization only approximately consistent
+$\rightarrow$ The Min-Max relevance model is due to the minimization only approximately consistent.
 \end{frame}
 
 
@@ -722,10 +722,10 @@ R_i = \sum_j \frac{q_{ij}}{\sum_{i'} q_{i'j}} R_j
 where $q_{ij}= w_{ij}^2$, $q_{ij}= x_i w_{ij}^+$ or $q_{ij}= x_i w_{ij} - l_i w_{ij}^+ - h_i w_{ij}^-$ for the $w^2$-rule, $z^+$-rule and the $z^b$- rule respectively
 \end{itemize}
 \vspace{0.1cm}
-$\rightarrow$ The training-free relevance model is consistent\\
+$\rightarrow$ The training-free relevance model is consistent.\\
 
 \vspace{0.5cm}
-When using the training-free model for the whole network all but the first layer need to be decomposed using the $z^+$-rule
+When using the training-free model for the whole network, all but the first layer need to be decomposed using the $z^+$-rule.
 \end{frame}
 
 
