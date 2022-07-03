@@ -13,7 +13,7 @@ import pandas as pd
 seed = 12345
 
 
-class NonNeg(tf.keras.constraints.Constraint):
+class NonPos(tf.keras.constraints.Constraint):
   """Constrains weight tensors to be centered around `ref_value`."""
 
   def __init__(self):
@@ -38,7 +38,11 @@ class NN:
         tf.random.set_seed(seed)
 
         model = keras.Sequential()
-        model.add(Dense(neurons[0], input_dim=self.x_train.shape[1], activation = "ReLU", bias_constraint=NonNeg()))
+        model.add(Dense(neurons[0], input_dim=self.x_train.shape[1], activation = "ReLU", bias_constraint=NonPos()))
+        if layers>1:
+            for layers in range(layers-1):
+                model.add(Dense(neurons[layers+1], input_dim=neurons[layers], activation = "ReLU", bias_constraint=NonPos()))
+
 
         # for l in range(layers):
         #     model.add(Dense(neurons[l], input_dim=self.x_train.shape[1], activation = "ReLU", bias_constraint=NonNeg()))

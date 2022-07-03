@@ -56,7 +56,7 @@
 
 % REQUIRED
 \begin{abstract}
-During the last decade Deep Neural Networks (DNNs) as well as other sophisticated machine learning models gained substantially on relevance, due to so far unreached performance in a variety of topics like image recognition, finance or natural language processing, to name only a few. Despite their great performance, those, mostly non linear models, lack of one important aspect, the explainability of the results. Montavon et al. introduce in their paper \textit{Explaining NonLinear Classification Decisions with Deep Taylor Decompositions} \cite{Montavon.2017b} a new technique, the deep Taylor decomposition, to map the relevance of the output on the input features, i.e. quantify the influence of each input variable on the output. They demonstrate the results on two image recognition data sets, the MNIST \cite{lecun2010mnist} and the ILSVRC \cite{Russakovsky.2015}, creating heatmaps to display the relevance of each single pixel. I recreate the procedure in Python and apply the deep Taylor decomposition to the titanic dataset \cite{Eaton.1998}.
+During the last decade Deep Neural Networks (DNNs) as well as other sophisticated machine learning models gained substantially on relevance, due to so far unreached performance in a variety of topics like image recognition, finance or natural language processing, to name only a few. Despite their great performance, those, mostly non linear models, lack of one important aspect, the explainability of the results. Montavon et al. introduce in their paper \textit{Explaining NonLinear Classification Decisions with Deep Taylor Decompositions} \cite{Montavon.2017b} a new technique, the deep Taylor decomposition, to map the relevance of the output on the input features, i.e. quantify the influence of each input feature on the output. They demonstrate the results on two image classification data sets, the MNIST \cite{lecun2010mnist} and the ILSVRC \cite{Russakovsky.2015}, creating heatmaps to display the relevance of each single pixel. I recreate one of the proposed propagation rules in Python and apply the deep Taylor decomposition to the titanic dataset \cite{Eaton.1998}.
 \end{abstract}
 
 % REQUIRED
@@ -111,7 +111,7 @@ forming the heatmap are greater or equal to zero, that is:
   \end{displaymath}
 \end{definition}
 \vspace{-0.15cm}
-This property ensures, that relevance cannot be negative in the sense that two pixels cancel each other out. Since definition \ref{thm:conservative} and definition \ref{thm:positive} are of essence for the evaluation of models we further define:
+This property ensures, that two pixels cannot cancel each other out or that a pixel contradicts the classification decision of the neural network. Since definition \ref{thm:conservative} and definition \ref{thm:positive} are of essence for the evaluation of models we further define:
 \begin{definition}[consistent]
 \label{thm:consistent}
 A heatmapping $R(x)$ is \underline{consistent} if it is \textit{conservative} \underline{and} \textit{positive}.
@@ -144,12 +144,12 @@ and $\odot$ is the element wise multiplication. The search of the root point is 
     \vspace{-0.1cm}
 \end{align*}
 where $\mathbb{X}$ is the input domain.\\
-Next we focus on the deep Taylor decomposition, where we consider the mapping of neurons in one layer to each neuron in the next layer, assuming a relation explainable by some relevance function $R_j(\{x_i\})$. If this assumption holds and we further identify a root point $\{\tilde{x}_i\}$ such that $R_j(\{\tilde{x}_i\})=0$ we apply the Taylor decomposition layer-wise:
+Next we focus on the deep Taylor decomposition, where we consider the mapping of neurons in one layer to each neuron in the next layer, instead of considering the whole neural network at once. Assuming there is a relation explainable by some relevance function $R_j(\{x_i\})$ and we further identify a root point $\{\tilde{x}_i\}$ such that $R_j(\{\tilde{x}_i\})=0$ we apply the Taylor decomposition layer-wise:
 \begin{align*}
     \sum_j R_j= \left( \frac{\partial (\sum_j R_j)}{\partial \{x_i\}}\Big|_{\{\tilde{x}_i\}}\right)^T \cdot (\{x_i\}-\{\tilde{x}\}) + \epsilon
     = \sum_i \sum_j \frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}\}} \cdot (x_i-\tilde{x}_i) + \epsilon
 \end{align*}
-If definition \ref{thm:consistent} holds for each local Taylor decomposition, the relevances is guaranteed to be conserved in each layer, i.e. $R_f=...=\sum_j R_j=...=\sum_p R_p$ and the relevance propagation rule is positive $R_f,...,\{R_j\},...\{R_p\} \geq 0$.\\
+If definition \ref{thm:consistent} holds for each local Taylor decomposition, the relevances is guaranteed to be conserved in each layer, i.e. $R_f=...=\sum_j R_j=...=\sum_p R_p$ and the relevance propagation rule is positive $R_f,...,\{R_j\},...,\{R_p\} \geq 0$.\\
 
 Further I will present two different approaches, the $\omega^2$-rule and the $z$-rule. As a starting point we consider a simple detection pooling neural network with a rectified linear activation function, i.e.
 \begin{align*}
@@ -159,7 +159,7 @@ where $\{x_i\}$ is a d-dimensional input and $\theta = \{w_{ij},b_j\}$ are weigh
 \begin{align*}
 R_j = \frac{\partial R_k}{\partial x_j}\Big|_{\{\tilde{x}_j\}} \cdot (x_j - \tilde{x}_j) 
 \end{align*}
-If either $\sum_j\tilde{x}_j=0$ and $\forall j: \tilde{x}_j \geq0$ we need to chose $\{\tilde{x}_j\}=0$ resulting in $R_j = x_j$, since $\frac{\partial R_k}{\partial x_j} = 1$. Redistributing the relevance to the next layer using the Taylor decomposition leads to 
+We chose $\{\tilde{x}_j\}=0$ as a proper root point resulting in $R_j = x_j$, since $\frac{\partial R_k}{\partial x_j} = 1$. Redistributing the relevance to the next layer using the Taylor decomposition leads to 
 \begin{align}
 R_i = \sum_j\frac{\partial R_j}{\partial x_i}\Big|_{\{\tilde{x}_i\}^{(j)}} \cdot (x_i - \tilde{x}_i^{(j)})
 \label{equ:propagationRule}
@@ -169,7 +169,7 @@ which is the starting point for the further analysis and leaves the question of 
 %\vspace{-0.2cm}
 \subsection{Unconstrained Input Space and $\omega^2$-Rule}
 \label{sec:wRule}
-Considering an unconstrained input space we search the nearest root point in the Euclidean sense. The intersection of equation $\sum_i \tilde{x}_i^{(j)} w_{ij}+b_j=0$ (root point) and the line of maximum descent $\{\tilde{x}_i\}^{(j)}=\{x_i\} +t w_j$ ($w_j$ as gradient of $R_j$), where $w_j$ is the weight vector and $t \in \mathbb{R}$ defines the nearest root point which is then given by $\{\tilde{x}_i\}^{(j)} = \{x_i - \frac{w_{ij}}{\sum_i w_{ij}^2}(\sum_i x_i w_{ij}+b_j)\}$. If we plug in $\{\tilde{x}_i\}^{(j)}$ in equation \ref{equ:propagationRule} we get the propagation rule for $R_i$
+Considering an unconstrained input space we search the nearest root point in the Euclidean sense. The intersection of equation $\sum_i \tilde{x}_i^{(j)} w_{ij}+b_j=0$ (root point) and the line of maximum descent $\{\tilde{x}_i\}^{(j)}=\{x_i\} +t w_j$ ($w_j$ as gradient of $R_j$), where $w_j$ is the weight vector and $t \in \mathbb{R}$, defines the nearest root point which is then given by $\{\tilde{x}_i\}^{(j)} = \{x_i - \frac{w_{ij}}{\sum_i w_{ij}^2}(\sum_i x_i w_{ij}+b_j)\}$. If we plug in $\{\tilde{x}_i\}^{(j)}$ in equation \ref{equ:propagationRule} we get the $w^2$-propagation rule for $R_i$
 \begin{align*}
 R_i = \sum_j\frac{w_{ij}^2}{\sum_i w_{ij}^2} R_j
 \end{align*}
@@ -181,7 +181,7 @@ $\forall g \in G$, the deep Taylor decomposition with the $\omega^2$-rule is con
 
 \subsection{Constrained Input Space and the z-Rules}
 \label{sec:zRule}
-Since in many cases the input domain is restricted the authors present a rule for bounded input spaces as well. Montavon et al. consider $\mathcal{X} = \mathbb{R}_x^d$ and $\mathcal{B} = \{\{x_i\} : \forall_{i=1}^d l_i\leq x_i \leq h_i\}$, where $l_i\leq 0$ and $h_i \geq 0$ are the respective lower and higher bounds for each input feature. I will only cover the first case since logic and results are quiet similar and the domain corresponds to the rectified linear activation. Montavon et al. propose the segment $(\{x_i 1_{w_{ij}<0}\},\{x_i\})$, since we already know of the existence of one root point at the origin and thus the direction of the segment is given by $v_i^{(j)} = x_i - x_i 1_{w_{ij}<0} = x_i 1_{w_{ij}\geq0}$. If we follow the same logic as in section \ref{sec:wRule} but adjust the line of maximum descent to $\{\tilde{x}_i\}^{(j)}=\{x_i\} +tx_i 1_{w_{ij}\geq0}$ we get the following relevance propagation rule
+Since in many cases the input domain is restricted the authors present a rule for bounded input spaces as well. Montavon et al. consider $\mathcal{X} = \mathbb{R}_x^d$ and $\mathcal{B} = \{\{x_i\} : \forall_{i=1}^d l_i\leq x_i \leq h_i\}$, where $l_i\leq 0$ and $h_i \geq 0$ are the respective lower and higher bounds for each input feature. I will only cover the first case since logic and results are quiet similar and the domain corresponds to the rectified linear activation. Montavon et al. propose the segment $(\{x_i 1_{w_{ij}<0}\},\{x_i\})$, since we already know of the existence of one root point at the origin and thus the direction of the segment is given by $v_i^{(j)} = x_i - x_i 1_{w_{ij}<0} = x_i 1_{w_{ij}\geq0}$. If we follow the same logic as in section \ref{sec:wRule} but adjust the line of maximum descent to $\{\tilde{x}_i\}^{(j)}=\{x_i\} +tx_i 1_{w_{ij}\geq0}$ we get the $z^+$-propagation rule
 \begin{align*}
 R_i = \sum_j\frac{x_i 1_{w_{ij}\geq0}}{\sum_{i´} x_{i´} 1_{w_{i´j}\geq0}} R_j
 \end{align*}
@@ -207,7 +207,7 @@ where $a_j = \min(0,\sum_lR_lv_{lj} + d_j)$ is a negative bias where the sum run
 min\langle(\hat{R}_k - R_k)^2\rangle 
 \label{min:relevanceModel}
 \end{equation}
-, where $R_k$ and $\hat{R}_k$ are the true and predicted relevances, we end up with the same problem as in section \ref{sec:main}. Due to the similar structure we can apply the same computations and derive $R_j = y_j$ and $R_i = \sum_j \frac{q_{ij}}{\sum_{i´}q_{i´j}} R_j$, where $q_{ij} \in \{w_{ij}^2, x_i w_{ij}1_{w_{ij}>0}\}$ for the $\omega^2$-rule and $z^+$-rule, respectively. In contrast to the problem before the resulting heatmap is only approximately conservative, due to the possible errors during the minimization of  \ref{min:relevanceModel}. 
+, where $R_k$ and $\hat{R}_k$ are the true and predicted relevances, we end up with the same problem as in section \ref{sec:main}. Due to the similar structure we can apply the same computations and derive $R_j = y_j$ and $R_i = \sum_j \frac{q_{ij}}{\sum_{i´}q_{i´j}} R_j$, where $q_{ij} \in \{v_{ij}^2, x_i v_{ij}1_{v_{ij}>0}\}$ for the $\omega^2$-rule and $z^+$-rule, respectively. In contrast to the problem before the resulting heatmap is only approximately conservative, due to the possible errors during the minimization of  \ref{min:relevanceModel}. 
 
 
 
@@ -216,7 +216,7 @@ min\langle(\hat{R}_k - R_k)^2\rangle
 As mentioned in the beginning the authors focus on image recognition and present examples from the MNIST \cite{lecun2010mnist} and the ILSVRC \cite{Russakovsky.2015} data sets. I will only present one example from the MNIST \cite{lecun2010mnist} data set and conclude with an example from the titanic \cite{Eaton.1998} data set.  
 
 \subsection{MNIST Example}
-Figure \ref{fig.1} shows how the proposed algorithms can detect pixels with a high relevance for detecting a `0` next to a distracting number. Montavon et al. show several examples of other numbers as in figure \ref{fig.3} and compare several methods. It can be seen that the heatmap clearly identifies the important pixels, i.e. correctly assigns relevance to areas where the digit is located. Further analysis shows, that especially the $\omega^2$- and $z$-rule are conservative and positive and thus satisfy comply with definition \ref{thm:consistent}.
+Figure \ref{fig.1} shows how the proposed algorithms can detect pixels with a high relevance for detecting a `0` next to a distracting number. Montavon et al. show several examples of other numbers as in figure \ref{fig.3} and compare several methods. It can be seen that the heatmap clearly identifies the important pixels, i.e. correctly assigns relevance to areas where the digit is located. Further analysis shows, that especially the $\omega^2$- and $z^b$-rule are conservative and positive and thus comply with definition \ref{thm:consistent}.
 \begin{figure}[ht]
 	\centering
       \includegraphics[width=0.75\textwidth]{images/fig._3_MNIST}
@@ -226,7 +226,7 @@ Figure \ref{fig.1} shows how the proposed algorithms can detect pixels with a hi
 \vspace{-0.25cm}
 
 \subsection{Titanic Example}
-Neural networks are not only used for image recognition but for a variety of problems like the prominent titanic survival classification which I chose for my personal analysis. I build a simple neural network with one hidden layer and 5 neurons, a bias $b_j\leq0$ and a sum pooling as output layer resulting in a accuracy of 79 \% on the test data and 84 \% on the trainings data. Table 1 summarizes the results  for a (very young) passenger which was classified as surviver. The numbers clearly show, that th age has a huge influence on the survival probability, but features like the passenger ID does not.\footnote{Code can be found on: \url{https://github.com/mpommer/Deep-Taylor-Decomposition-Python}}
+Neural networks are not only used for image recognition but for a variety of problems like the prominent titanic survival classification which I chose for my personal analysis. I build a simple neural network with one hidden layer and 5 neurons, a bias $b_j\leq0$ and a sum pooling as output layer resulting in a accuracy of 79 \% on the test data and 84 \% on the trainings data. Table 1 summarizes the results  for a (very young) passenger which was classified as surviver. The numbers clearly show, that the age has a huge influence on the survival probability, but features like the passenger ID does not.\footnote{Code can be found on: \url{https://github.com/mpommer/Deep-Taylor-Decomposition-Python}}
 \vspace{-0.5cm}
 \begin{table}[H]
 
@@ -245,7 +245,7 @@ Neural networks are not only used for image recognition but for a variety of pro
 
 \section{Conclusion}
 \label{sec:conclusions}
-The increasing popularity of machine learning and, with it, complex deep neural networks raised the question of explainability, amongst others on context of legal questions for self driving cars or in pricing for insurance.  Montavon et al. present in their paper \textit{Explaining NonLinear Classification Decisions with Deep Taylor Decompositions} \cite{Montavon.2017b} practical algorithms which can help to tackle the problem of interpretability for a wide range of deep learning models. The authors furthermore substantiate their theory with examples on two very famous image recognition data sets, namely the MNIST \cite{lecun2010mnist} and the ILSVRC \cite{Russakovsky.2015} data sets. I myself could reproduce reliable results on the titanic \cite{Eaton.1998} data set.
+The increasing popularity of machine learning and, with it, complex deep neural networks raised the question of explainability, amongst others in the context of legal questions for self driving cars or insurance pricing.  Montavon et al. present in their paper \textit{Explaining NonLinear Classification Decisions with Deep Taylor Decompositions} \cite{Montavon.2017b} practical algorithms which can help to tackle the problem of interpretability for a wide range of deep learning models. The authors furthermore substantiate their theory with examples on two very famous image recognition data sets, namely the MNIST \cite{lecun2010mnist} and the ILSVRC \cite{Russakovsky.2015} data sets. I myself could reproduce reliable results on the titanic \cite{Eaton.1998} data set.
 
 
 \bibliographystyle{siamplain}

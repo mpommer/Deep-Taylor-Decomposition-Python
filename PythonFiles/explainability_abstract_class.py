@@ -70,6 +70,24 @@ class explainability(metaclass=abc.ABCMeta):
         else:
             print("The model is not consistent!")
             
+    def getInput_activation(self):
+        dic = {}
+        dic["0_layer"]= self.input_vector
+        
+        input_array = self.input_vector
+        for layer in np.arange(1,len(self.model.layers)+1):
+            weights = self.model.layers[layer-1].weights[0].numpy()
+            bias = self.model.layers[layer-1].weights[1].numpy()
+            
+            output = np.matmul(input_array,weights)+bias
+            output = np.array([max(0,x) for x in output])
+            dic[f"{layer}_layer"]=output
+            
+            input_array = output
+            
+            
+        self.dic = dic
+            
             
     
     

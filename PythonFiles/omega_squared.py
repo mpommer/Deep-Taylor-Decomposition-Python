@@ -12,9 +12,16 @@ class omega_squared(explainability):
     def fit(self):
         # from first layer to output
         self.getInput_activation()
-        R_j = self.dic["1_layer"]
         
-        R_i = self.omegaRule(R_j, self.model.layers[0].weights[0].numpy())
+        layers = len(self.model.layers)
+        
+        # for the last hidden layer
+        R_j = self.dic[f"{layers-1}_layer"]
+        
+        for layer in np.arange(layers-2,-1,-1):
+            
+            R_i = self.omegaRule(R_j, self.model.layers[layer].weights[0].numpy())
+            R_j = R_i
             
         return R_i
     
@@ -24,63 +31,7 @@ class omega_squared(explainability):
         
         return np.matmul(n, R_j)
         
-        # summe = sum(weights**2)
-        # for in_neuron_index, inputs in enumerate(weights):
-        #     R_i = 0
-        #     for out_neuron_index, weight in enumerate(inputs):
-        #         weight_squared = weight**2
-        #         weight_sum = summe[out_neuron_index]
-        #         R_i += weight_squared/weight_sum*R_j[out_neuron_index]
-            
-            
-        #     input_relevance.append(R_i)
-            
-        # return input_relevance
-    
-    def getInput_activation(self):
-        dic = {}
-        dic["0_layer"]= self.input_vector
-        
-        input_array = self.input_vector
-        for layer in np.arange(1,len(self.model.layers)+1):
-            weights = self.model.layers[layer-1].weights[0].numpy()
-            bias = self.model.layers[layer-1].weights[1].numpy()
-            
-            output = np.matmul(input_array,weights)+bias
-            output = np.array([max(0,x) for x in output])
-            dic[f"{layer}_layer"]=output
-            
-            input_array = output
-            
-            
-        self.dic = dic
     
     
-    # def fit(self):
-    #     number_layers = len(self.model.layers)
-        
-        
-    #     output = self.result
-    #     for layer in np.arange(number_layers-1, -1, -1):
-    #         output = self.omegaRule(output, self.model.layers[layer].weights[0].numpy())
-            
-    #     return output
-    
-    # def omegaRule(self, R_j, weights):
-    #     input_relevance = []
-        
-    #     summe = sum(weights**2)
-    #     for in_neuron_index, inputs in enumerate(weights):
-    #         R_i = 0
-    #         for out_neuron_index, weight in enumerate(inputs):
-    #             weight_squared = weight**2
-    #             weight_sum = summe[out_neuron_index]
-    #             R_i += weight_squared/weight_sum*R_j[out_neuron_index]
-            
-            
-    #         input_relevance.append(R_i)
-            
-    #     return input_relevance
-
 
 

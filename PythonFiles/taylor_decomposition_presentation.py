@@ -9,54 +9,13 @@ from PythonFiles.dataReading import data_reading_transformation
 from PythonFiles.omega_squared import omega_squared
 from PythonFiles.Neural_Network import NN
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#%%
 # preprocess data
-x_train, y_train, x_test, y_test, feature_name = data_reading_transformation(path_url = "data/titanic", minmaxscaler = True, withID = True)
+x_train, y_train, x_test, y_test, feature_name = data_reading_transformation(path_url = "data/titanic", minmaxscaler = False, withID = True)
 
 # build the neural network
 neural_network = NN(x_train, y_train)
-neural_network.fit(layers = 1, neurons = [5]*1, verbose = 0)
+hidden_layers = 2
+neural_network.fit(layers = hidden_layers, neurons = [10]*hidden_layers, verbose = 0)
 
 # print test results
 neural_network.testResult(x_test,y_test)
@@ -80,4 +39,33 @@ relevance = taylor_decomposition.fit()
 taylor_decomposition.printExplainability(feature_name)
 
 
+#%%
 
+from PythonFiles.z_rule import z_rule
+
+# #%%choose passenger and create taylor decomposition
+passenger = 89
+z_ru = z_rule(model, prediction[passenger], x_test[passenger])
+        
+relevance = z_ru.fit()
+        
+        
+z_ru.printExplainability(feature_name)
+
+
+
+#%%
+
+from PythonFiles.z_plusrule import z_plus_rule
+
+# #%%choose passenger and create taylor decomposition
+passenger = 89
+z_ru = z_plus_rule(model, prediction[passenger], x_test[passenger])
+        
+relevance = z_ru.fit()
+        
+        
+z_ru.printExplainability(feature_name)
+
+z_ru.isConservative()
+z_ru.isPositive()
